@@ -162,6 +162,13 @@ ul.plain li{margin-bottom:.45rem}
   @keyframes run{0%{transform:translateX(0);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translateX(272px);opacity:0}}
 }
 .duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;align-items:start}
+
+/* the two narrated videos, above the first figure */
+.watch{margin:0 0 1.4rem;align-items:stretch}
+.watch .fig{margin:0;padding:0;overflow:hidden}
+.watch video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:var(--grid)}
+.watch figcaption{display:grid;gap:.2rem;padding:10px 12px 12px}
+.watch .cap{margin:.15rem 0 0}
 footer{margin:3.5rem 0 3rem;padding-top:1rem;border-top:1px solid var(--ink);font:400 .86rem/1.55 var(--font-ui);color:var(--ink-2)}
 footer h3{margin-top:0}
 footer ul{padding-left:1.1rem;margin:0 0 1rem}
@@ -176,6 +183,22 @@ code{font:400 .88em ui-monospace,SFMono-Regular,Menlo,monospace;background:color
   <p class="kicker">Riemann 1859 · Alpöge with Claude 2026</p>
   <h1>The Riemann Hypothesis <em>in pictures</em></h1>
   <p class="dek">Twelve figures you can play with: what the conjecture says, why primes and complex zeros are two views of one object, and how the proof announced on 20 November 2026 is reported to work.</p>
+  <div class="watch duo" id="watch">
+    <figure class="fig">
+      <video controls playsinline preload="none" poster="media/video-short-poster.jpg" aria-label="The Riemann hypothesis explained: the short cut, 3 minutes 15 seconds, narrated, with captions on screen.">
+        <source src="video/riemann-hypothesis-explained.mp4" type="video/mp4">
+        <a href="video/riemann-hypothesis-explained.mp4">Download the short cut (MP4)</a>
+      </video>
+      <figcaption><span class="fig-n">Video · 3 min 15 s</span><span class="fig-t">The short cut</span><span class="cap">The same story, narrated. Ten scenes of intuition, with no formula beyond the definition of ζ.</span></figcaption>
+    </figure>
+    <figure class="fig">
+      <video controls playsinline preload="none" poster="media/video-extended-poster.jpg" aria-label="The Riemann hypothesis explained: the extended cut, 4 minutes 40 seconds, narrated, with captions on screen.">
+        <source src="video/riemann-hypothesis-extended.mp4" type="video/mp4">
+        <a href="video/riemann-hypothesis-extended.mp4">Download the extended cut (MP4)</a>
+      </video>
+      <figcaption><span class="fig-n">Video · 4 min 40 s</span><span class="fig-t">The extended cut</span><span class="cap">Adds Euler's sum and π, Euler's product, complex numbers as rotations, ζ as a sum of turning arrows, and the key formulas on screen.</span></figcaption>
+    </figure>
+  </div>
   <figure class="fig" style="margin:0">
     <div class="plot"><canvas id="hero" role="img" aria-label="The curve traced by zeta of one half plus i t in the complex plane for t from 0 to 50. It passes through the origin ten times."></canvas></div>
     <p class="read" id="heroRead"></p>
@@ -995,6 +1018,12 @@ function drawTrace(cv, H, P, i1, o){
   pressGroup([...$('#b12').children], b => { E = +b.dataset.e; draw(); });
   figs.push(draw);
 })();
+
+/* ---------- videos ---------- */
+// The videos are separate files beside this page. If the page was saved on its own, take the two players out.
+(() => { const w = $('#watch'), im = new Image(); im.onerror = () => w.remove(); im.src = w.querySelector('video').poster; })();
+// One at a time.
+document.querySelectorAll('#watch video').forEach(v => v.addEventListener('play', () => document.querySelectorAll('#watch video').forEach(o => { if (o !== v) o.pause(); })));
 
 /* ---------- boot ---------- */
 document.querySelectorAll('.toc a').forEach(a => a.addEventListener('click', e => { const t = document.getElementById(a.getAttribute('href').slice(1)); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }); } }));

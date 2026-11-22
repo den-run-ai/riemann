@@ -4,9 +4,20 @@
 
 Twelve figures you can play with: what the conjecture says, why primes and complex zeros are two views of one object, and how the proof announced on 20 November 2026 is reported to work.
 
-**Also in this repository:** the [interactive version](index.html) of this post · a [3-minute video](video/riemann-hypothesis-explained.mp4) · a [5-minute video with the key formulas](video/riemann-hypothesis-extended.mp4) · [how it was all made](docs/SESSION.md)
+<table>
+  <tr>
+    <td width="50%"><a href="https://den-run-ai.github.io/riemann/video/riemann-hypothesis-explained.mp4"><img src="media/video-short-play.jpg" alt="Play the short cut, 3 minutes 15 seconds. The still shows one zero moved off the critical line and its wave outgrowing the rest."></a></td>
+    <td width="50%"><a href="https://den-run-ai.github.io/riemann/video/riemann-hypothesis-extended.mp4"><img src="media/video-extended-play.jpg" alt="Play the extended cut, 4 minutes 40 seconds. The still shows the terms of zeta laid head to tail as arrows, spiralling around the value of zeta."></a></td>
+  </tr>
+  <tr>
+    <td valign="top"><b><a href="https://den-run-ai.github.io/riemann/video/riemann-hypothesis-explained.mp4">Watch the short cut, 3 min 15 s.</a></b> The same story, narrated. Ten scenes of intuition, with no formula beyond the definition of zeta.</td>
+    <td valign="top"><b><a href="https://den-run-ai.github.io/riemann/video/riemann-hypothesis-extended.mp4">Watch the extended cut, 4 min 40 s.</a></b> Fourteen scenes. Adds Euler's sum 1 + ¼ + ⅑ + ⋯ = π²/6, Euler's product over the primes, complex numbers as rotations, <i>e</i><sup><i>iπ</i></sup> = −1, zeta as a sum of turning arrows, and the key formulas on screen.</td>
+  </tr>
+</table>
 
-Each figure below is a recording of the live figure with its controls being moved. To move them yourself, download [`index.html`](index.html) and open it in a browser; it is one self-contained file. (With GitHub Pages switched on for this repository it is also served at https://den-run-ai.github.io/riemann/.)
+**Also here:** the [interactive version](https://den-run-ai.github.io/riemann/) of this post, with both videos and twelve live figures · [more about the videos](#the-videos) · [how it was all made](docs/SESSION.md)
+
+Each figure below is a recording of the live figure with its controls being moved. To move them yourself, open the [interactive version](https://den-run-ai.github.io/riemann/). It also works offline: download [`index.html`](index.html) and open it in a browser; the figures need no other file.
 
 <p align="center">
   <picture>
@@ -349,18 +360,7 @@ Every chart in the interactive version is computed in your browser: primes by si
 
 ## The videos
 
-The same story as a narrated video, in two cuts. Both are 1920×1080 with spoken narration and burnt-in captions.
-
-<table>
-  <tr>
-    <td width="50%"><a href="video/riemann-hypothesis-explained.mp4"><img src="media/video-short-poster.jpg" alt="A frame of the short cut: one zero moved off the critical line, and its wave outgrowing the rest."></a></td>
-    <td width="50%"><a href="video/riemann-hypothesis-extended.mp4"><img src="media/video-extended-poster.jpg" alt="A frame of the extended cut: the terms of zeta laid head to tail as arrows, spiralling around the value of zeta."></a></td>
-  </tr>
-  <tr>
-    <td valign="top"><b><a href="video/riemann-hypothesis-explained.mp4">Short cut, 3 min 15 s.</a></b> Ten scenes of intuition, with no formula beyond the definition of zeta.</td>
-    <td valign="top"><b><a href="video/riemann-hypothesis-extended.mp4">Extended cut, 4 min 40 s.</a></b> Fourteen scenes. Adds Euler's sum 1 + ¼ + ⅑ + ⋯ = π²/6, Euler's product over the primes, complex numbers as rotations, <i>e</i><sup><i>iπ</i></sup> = −1, zeta as a sum of turning arrows, and the key formulas on screen.</td>
-  </tr>
-</table>
+The two videos at the top of this page are 1920×1080, with spoken narration and burnt-in captions. They share their opening and closing scenes; the extended cut replaces one scene in the middle with five.
 
 <p align="center">
   <img src="media/video-extended-arrows.gif" width="640" alt="From the extended cut: the terms of zeta at one half plus i t drawn as arrows laid head to tail. The first few arrows make long strides and the rest spiral around one point, marked with a ring, which moves as t increases.">
@@ -375,12 +375,12 @@ Captions, transcripts, scene lists and build notes are in [`video/`](video).
 | Path | What it is |
 |:--|:--|
 | `README.md` | This post. |
-| [`index.html`](index.html) | The interactive version: one self-contained page with twelve live figures. |
+| [`index.html`](index.html) | The interactive version, served at https://den-run-ai.github.io/riemann/: twelve live figures, with both videos at the top. The figures need no other file; the two players load the files in `video/`. |
 | [`video/`](video) | The two finished videos, with captions (`.srt`) and narration transcripts. |
-| [`media/`](media) | The recordings and stills shown on this page. |
+| [`media/`](media) | The recordings and stills shown on this page, and the poster frames of the two video players. |
 | [`src/explainer/`](src/explainer) | Source of `index.html`: markup and figure code, number-theory helpers, the first 600 zeros of zeta, build script. |
 | [`src/video/`](src/video) | Source of the videos: scene renderer, build scripts, and for each cut its narration script, recorded narration and timeline. |
-| [`src/readme/`](src/readme) | The script that records the figures for this page, and checks for the page itself. |
+| [`src/readme/`](src/readme) | The scripts that record the figures for this page and put the play button on the video stills, and checks for the page itself. |
 | [`docs/SESSION.md`](docs/SESSION.md) | Log of the sessions that produced all of this: prompts, what was checked, what could not be. |
 
 ### Read this first

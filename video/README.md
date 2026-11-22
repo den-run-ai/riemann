@@ -7,6 +7,8 @@ Two cuts of one narrated explanation of the Riemann hypothesis. Both are 1920×1
 | Short | [`riemann-hypothesis-explained.mp4`](riemann-hypothesis-explained.mp4) | 3:15 | Intuition only. The one formula on screen is the definition of zeta. |
 | Extended | [`riemann-hypothesis-extended.mp4`](riemann-hypothesis-extended.mp4) | 4:40 | Euler's sum and π, Euler's product, complex numbers as rotations, zeta as a sum of turning arrows, and the key formulas on screen. |
 
+Both play in the browser at the top of the [interactive page](https://den-run-ai.github.io/riemann/). GitHub itself does not preview files of this size, so from the repository they can only be downloaded.
+
 Next to each video are its captions as a separate file (`.srt`) and the narration script with scene times (`.transcript.md`).
 
 ## Scenes

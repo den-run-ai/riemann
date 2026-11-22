@@ -4,7 +4,7 @@ One chat session with Claude (Anthropic), model Claude Fable 5.2, on Sunday 22 N
 
 The prompts are quoted as typed. The replies are reproduced in full; the source links that were attached to individual sentences in the chat are gathered in the list at the end.
 
-> **Added later.** Sections 1 to 3 and the three lists after them are the log of that session, kept as written. Where they say `explainer-src/` and `video-src/` they mean what is now `src/explainer/` and `src/video/`. [Section 4](#4-the-repository-the-readme-and-the-extended-video-1411-a-second-session), at the end, was added by a second session later the same day, which laid out this repository, turned the explainer into the README and made the extended video.
+> **Added later.** Sections 1 to 3 and the three lists after them are the log of that session, kept as written. Where they say `explainer-src/` and `video-src/` they mean what is now `src/explainer/` and `src/video/`. [Section 4](#4-the-repository-the-readme-and-the-extended-video-1411-a-second-session), at the end, was added by a second session later the same day, which laid out this repository, turned the explainer into the README and made the extended video. `index.html` has since gained one block, the two video players under the title; nothing else in it was changed.
 
 ## 1. The explainer (06:39)
 
@@ -185,6 +185,17 @@ A separate session, in Claude Code, working in a checkout of this repository, wh
 - **GitHub's own renderer.** The README was checked against GitHub's markdown library and MathJax locally. The switch between light and dark recordings, the note boxes and the links from the table of contents were not seen on GitHub itself.
 - **Primary sources.** The Lean community's post and the news reports were again known only through search results.
 - **Switching on GitHub Pages.** The README gives the address the interactive page would have. Whether it is served there depends on a repository setting this session did not touch.
+
+### Afterwards: the page goes live, and the videos move to the top
+
+The work was pushed to the repository's main branch at the owner's request, and GitHub Pages was switched on from outside this session. The live page was then fetched and compared with `index.html`: the same bytes, fourteen canvases drawn, no script error.
+
+> Why not embed both videos in the blog at the top?
+
+1. **On the interactive page**, two players now sit under the title, above the first figure. They load nothing until played, and starting one pauses the other. A copy of the page saved on its own, without the `video/` and `media/` folders, removes the players and shows the figures as before. This is the first change to `index.html` since it was delivered: 29 lines added, none altered.
+2. **In the README**, the two video stills moved from the end to the top, with a play button and running time drawn on them. GitHub shows a player in a README only for a video uploaded through its own editor, and its file pages do not preview files of this size, so the stills link to the videos on the live page, where the browser plays them.
+
+Checked: both players at phone and desktop widths in both themes; playing, and one pausing the other, with clips cut from the real videos; the removal when the page is saved alone; the README's links and formulas again.
 
 ### Sources consulted in this session
 
