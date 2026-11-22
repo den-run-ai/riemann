@@ -1,0 +1,265 @@
+1
+00:00:00,600 --> 00:00:03,440
+Prime numbers are the atoms of arithmetic.
+
+2
+00:00:03,580 --> 00:00:07,084
+Every whole number is built by multiplying primes together.
+
+3
+00:00:07,224 --> 00:00:12,403
+Yet the primes themselves seem to turn up
+at random, with no pattern anyone can see.
+
+4
+00:00:13,633 --> 00:00:15,831
+Step back, though, and order appears.
+
+5
+00:00:15,971 --> 00:00:19,067
+Count the primes as you go, and you get a staircase.
+
+6
+00:00:19,207 --> 00:00:24,901
+From far away, that staircase hugs a smooth
+curve, one that Gauss guessed as a teenager.
+
+7
+00:00:25,041 --> 00:00:29,867
+So here is the real question. How far
+does the staircase stray from the curve?
+
+8
+00:00:31,100 --> 00:00:33,859
+Think of flipping a fair coin a million times.
+
+9
+00:00:33,999 --> 00:00:39,117
+Heads and tails will differ by something like
+a thousand, the square root of a million.
+
+10
+00:00:39,257 --> 00:00:41,514
+That is the fingerprint of pure chance.
+
+11
+00:00:41,654 --> 00:00:45,948
+The Riemann hypothesis says the
+primes are just as well behaved.
+
+12
+00:00:46,088 --> 00:00:49,045
+Their error stays on the scale of the square root of x.
+
+13
+00:00:50,267 --> 00:00:55,440
+The road to that claim begins with Leonhard
+Euler, more than a century before Riemann.
+
+14
+00:00:55,580 --> 00:01:00,920
+He added up 1, plus 1/4, plus 1/9,
+and so on: one over every square.
+
+15
+00:01:01,060 --> 00:01:03,341
+The total is π² over 6.
+
+16
+00:01:03,481 --> 00:01:07,640
+π, the number of the circle, turns
+up in a sum over whole numbers.
+
+17
+00:01:08,867 --> 00:01:10,487
+Then Euler found the key.
+
+18
+00:01:10,627 --> 00:01:15,582
+The same kind of sum can be rewritten as a
+product, with one factor for each prime.
+
+19
+00:01:15,722 --> 00:01:20,467
+It works because every whole number is
+built from primes in exactly one way.
+
+20
+00:01:20,607 --> 00:01:24,561
+All the whole numbers on one side.
+Only the primes on the other.
+
+21
+00:01:24,701 --> 00:01:29,198
+This one identity ties the primes
+to a function. Its name is zeta.
+
+22
+00:01:30,400 --> 00:01:35,213
+In 1859, Bernhard Riemann fed that function complex numbers.
+
+23
+00:01:35,353 --> 00:01:40,796
+A complex number is a point on a plane,
+and multiplying by i is a quarter turn.
+
+24
+00:01:40,936 --> 00:01:49,275
+Euler's formula puts every rotation in one line: e to
+the iθ is the point on the unit circle at angle θ.
+
+25
+00:01:49,415 --> 00:01:53,280
+Half a turn is the angle π, and it lands on −1.
+
+26
+00:01:54,500 --> 00:01:58,435
+So with a complex input, every
+term of zeta becomes an arrow.
+
+27
+00:01:58,575 --> 00:02:04,336
+The real part of the input sets its length.
+The imaginary part, t, sets its angle.
+
+28
+00:02:04,476 --> 00:02:11,050
+Lay the arrows head to tail. The first few make big
+strides, and the rest spiral around a single point.
+
+29
+00:02:11,190 --> 00:02:13,369
+That point is the value of zeta.
+
+30
+00:02:13,509 --> 00:02:18,408
+As t rises, every arrow turns at its
+own speed, and the point wanders.
+
+31
+00:02:19,633 --> 00:02:23,365
+Follow that point as t climbs, and it traces a looping path.
+
+32
+00:02:23,505 --> 00:02:29,830
+On this special line, where the real part is ½,
+the path keeps passing exactly through zero.
+
+33
+00:02:29,970 --> 00:02:35,577
+There, the arrows spiral around zero itself.
+Those moments are the zeros of zeta.
+
+34
+00:02:36,800 --> 00:02:39,520
+And the zeros know everything about the primes.
+
+35
+00:02:39,660 --> 00:02:41,866
+Each zero contributes one wave.
+
+36
+00:02:42,006 --> 00:02:47,977
+Add the waves together, one after another, and
+the prime staircase emerges from smooth ripples.
+
+37
+00:02:48,117 --> 00:02:51,385
+The zeros are the notes. The primes are the music.
+
+38
+00:02:52,600 --> 00:02:55,894
+Where a zero sits decides how loud its wave is.
+
+39
+00:02:56,034 --> 00:03:00,938
+On the special line, every wave grows
+at the same gentle, square root rate.
+
+40
+00:03:01,078 --> 00:03:08,353
+A single zero off the line would make a wave that outgrows
+all the others, and the balance of the primes would be lost.
+
+41
+00:03:08,493 --> 00:03:13,381
+Riemann's hypothesis is that this never
+happens. Every zero is on the line.
+
+42
+00:03:13,521 --> 00:03:17,120
+For 167 years, nobody could prove it.
+
+43
+00:03:18,333 --> 00:03:22,574
+There is a parallel world where the
+same statement was proved decades ago.
+
+44
+00:03:22,714 --> 00:03:25,888
+There, whole numbers are replaced by polynomials.
+
+45
+00:03:26,028 --> 00:03:32,402
+One proof uses a fact from school algebra: a
+polynomial cannot have more roots than its degree.
+
+46
+00:03:32,542 --> 00:03:37,563
+So if every root is forced to count many
+times over, there cannot be many roots.
+
+47
+00:03:37,703 --> 00:03:40,086
+That counting trick delivers the square root.
+
+48
+00:03:41,300 --> 00:03:44,093
+For whole numbers, the trick always broke down.
+
+49
+00:03:44,233 --> 00:03:50,199
+To make a root count many times, you take
+derivatives. And a whole number has no derivative.
+
+50
+00:03:50,339 --> 00:03:57,853
+The proof announced this month by Levent Alpöge, working
+with the AI model Claude, is reported to find a substitute.
+
+51
+00:03:57,993 --> 00:04:01,674
+It builds a long chain of operations called theta lifts.
+
+52
+00:04:01,814 --> 00:04:09,338
+Each link adds one more layer of divisibility by primes,
+doing the job that a derivative does for polynomials.
+
+53
+00:04:10,567 --> 00:04:11,980
+Where does it stand today?
+
+54
+00:04:12,120 --> 00:04:19,731
+The proof is 17 million lines of code in a language called
+Lean, and independent proof checkers have accepted it.
+
+55
+00:04:19,871 --> 00:04:25,938
+But no person has yet read and understood the
+whole argument. That work has only just begun.
+
+56
+00:04:26,078 --> 00:04:30,116
+So for now: checked by machine,
+not yet understood by people.
+
+57
+00:04:31,333 --> 00:04:36,480
+If it holds up, one of the oldest questions
+about numbers finally has its answer.
+
+58
+00:04:36,620 --> 00:04:39,497
+The primes are as orderly as randomness allows.

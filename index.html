@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Riemann Hypothesis in Pictures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout idea: one reading column set like a 19th-century journal page; figures are instruments.
+     Colour carries meaning everywhere: orange = built from primes, blue = built from zeros, green = the smooth law. */
+  --paper:#f1f3f6; --surface:#fbfcfd; --ink:#0f1720; --ink-2:#465160; --muted:#7a8592;
+  --rule:#d5dbe3; --grid:#e4e8ed;
+  --prime:#eb6834; --zero:#2a78d6; --law:#1baf7a; --whatif:#6250d6;
+  --heat0:#e6eefa; --heat1:#0d366b; --good:#006300;
+  --font-display:"Bodoni Moda","Bodoni 72",Didot,"Times New Roman",serif;
+  --font-body:"STIX Two Text","STIX Two Math",Cambria,"Times New Roman",serif;
+  --font-ui:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0d1116; --surface:#151a21; --ink:#e9edf2; --ink-2:#b4bdc9; --muted:#7f8a97;
+    --rule:#2a323c; --grid:#212831;
+    --prime:#d95926; --zero:#3987e5; --law:#199e70; --whatif:#9085e9;
+    --heat0:#18222f; --heat1:#9ec5f4; --good:#0ca30c;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0d1116; --surface:#151a21; --ink:#e9edf2; --ink-2:#b4bdc9; --muted:#7f8a97;
+  --rule:#2a323c; --grid:#212831;
+  --prime:#d95926; --zero:#3987e5; --law:#199e70; --whatif:#9085e9;
+  --heat0:#18222f; --heat1:#9ec5f4; --good:#0ca30c;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.125rem/1.6 var(--font-body);overflow-wrap:break-word}
+.col{max-width:36rem;margin:0 auto;padding:0 20px}
+a{color:var(--zero);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--zero);outline-offset:2px}
+p{margin:0 0 1rem}
+i,em{font-style:italic}
+sup,sub{font-size:.72em;line-height:0}
+
+/* hero */
+.hero{padding:2.2rem 0 .5rem}
+.kicker{font:600 .72rem/1.3 var(--font-ui);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 .9rem}
+h1{font:500 clamp(2.7rem,12vw,4.3rem)/.96 var(--font-display);letter-spacing:-.012em;margin:0 0 1rem;text-wrap:balance}
+h1 em{font-weight:400;color:var(--zero)}
+.dek{font-size:1.2rem;line-height:1.45;color:var(--ink-2);margin:0 0 1.4rem;text-wrap:pretty}
+
+/* section heads */
+.part{margin:3.4rem 0 0;padding-top:.8rem;border-top:1px solid var(--ink);font:600 .74rem/1.3 var(--font-ui);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);display:flex;justify-content:space-between;gap:12px}
+h2{font:500 1.85rem/1.08 var(--font-display);margin:2.6rem 0 .9rem;text-wrap:balance;display:grid;grid-template-columns:auto 1fr;column-gap:.7rem;align-items:baseline}
+h2 .num{font:italic 400 2.5rem/1 var(--font-display);color:var(--zero);font-variant-numeric:lining-nums}
+h3{font:600 .8rem/1.3 var(--font-ui);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);margin:1.6rem 0 .6rem}
+
+/* math */
+.eq{font-size:1.1em;text-align:center;margin:1.1rem 0 1.2rem;overflow-x:auto;white-space:nowrap;padding:.15rem 0}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.9em;line-height:1.2;margin:0 .1em}
+.fr>span:first-child{border-bottom:1px solid currentColor;padding:0 .25em .05em}
+.fr>span:last-child{padding:.05em .25em 0}
+.big{font-size:1.35em;line-height:1;vertical-align:-.08em}
+.thm{border-left:3px solid var(--zero);padding:.1rem 0 .1rem .9rem;margin:1.2rem 0;font-size:1.08em}
+.thm b{font:600 .72rem/1.3 var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--zero);display:block;margin-bottom:.25rem}
+
+/* status */
+.status{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:16px 16px 4px;margin:1.6rem 0 0}
+.status h3{margin:0 0 .9rem}
+.st{display:grid;grid-template-columns:1fr;gap:.3rem;margin:0 0 1rem;font-size:1rem;line-height:1.5}
+.chip{justify-self:start;font:600 .7rem/1 var(--font-ui);letter-spacing:.05em;text-transform:uppercase;padding:5px 9px 5px 7px;border-radius:999px;border:1px solid currentColor;display:inline-flex;gap:6px;align-items:center;color:var(--ink-2)}
+.chip.ok{color:var(--good)}
+.chip svg{width:11px;height:11px;flex:none}
+.lede-note{font:400 .9rem/1.5 var(--font-ui);color:var(--ink-2);margin:1.2rem 0 0}
+
+/* contents */
+.toc{margin:1.8rem 0 0;font:400 .92rem/1.35 var(--font-ui);display:grid;gap:1rem}
+.toc b{display:block;font-weight:600;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+.toc ol{margin:0;padding:0;list-style:none;display:grid;gap:.15rem}
+.toc a{display:grid;grid-template-columns:1.6rem 1fr;padding:.3rem 0;text-decoration:none;color:var(--ink)}
+.toc a span{color:var(--zero);font-variant-numeric:tabular-nums}
+.toc a:hover{text-decoration:underline}
+
+/* figures */
+.fig{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:14px 14px 12px;margin:1.5rem 0 1.6rem}
+.fig-h{display:grid;gap:.15rem;margin:0 0 .7rem}
+.fig-n{font:600 .68rem/1.2 var(--font-ui);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.fig-t{font:600 .98rem/1.3 var(--font-ui);color:var(--ink);text-wrap:balance}
+.plot{position:relative}
+canvas{display:block;width:100%;touch-action:pan-y}
+.legend{display:flex;flex-wrap:wrap;gap:.3rem .95rem;font:400 .8rem/1.3 var(--font-ui);color:var(--ink-2);margin:0 0 .55rem}
+.legend span{display:inline-flex;align-items:center;gap:.4rem}
+.legend i{display:inline-block;width:16px;height:0;border-top:2px solid var(--c);flex:none}
+.legend i.dash{border-top-style:dashed}
+.legend i.box{height:10px;width:10px;border:0;background:var(--c);border-radius:2px}
+.legend i.dotk{height:8px;width:8px;border:0;background:var(--c);border-radius:50%}
+.cap{font:400 .86rem/1.5 var(--font-ui);color:var(--ink-2);margin:.7rem 0 0}
+.read{font:400 .86rem/1.5 var(--font-ui);color:var(--ink);font-variant-numeric:tabular-nums;margin:.6rem 0 0;min-height:1.3em}
+.read b{font-weight:600}
+.read b,.read span{margin-right:.75em}
+.read .dim{color:var(--ink-2)}
+.ctl{display:grid;gap:.5rem;margin:.75rem 0 0}
+.row{display:grid;grid-template-columns:auto 1fr auto;gap:.7rem;align-items:center;font:400 .86rem/1.2 var(--font-ui);color:var(--ink-2)}
+.row output{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600;min-width:3.2em;text-align:right}
+input[type=range]{width:100%;height:34px;margin:0;accent-color:var(--zero);background:transparent}
+.btns{display:flex;flex-wrap:wrap;gap:.5rem}
+button{font:600 .84rem/1 var(--font-ui);color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:6px;min-height:40px;padding:0 14px;cursor:pointer}
+button:hover{border-color:var(--muted)}
+button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+button.primary{background:var(--zero);border-color:var(--zero);color:#fff}
+.tip{position:absolute;z-index:3;pointer-events:none;background:var(--ink);color:var(--paper);font:400 .76rem/1.4 var(--font-ui);padding:6px 9px;border-radius:4px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tip-h{opacity:.75;margin-bottom:2px}
+.tip-r{display:flex;align-items:center;gap:6px}
+.tip-r .key{width:10px;height:0;border-top:2px solid var(--k);flex:none}
+.tip-r b{font-weight:600}
+.tip-r span:last-child{opacity:.75}
+
+/* worked examples */
+.ex{margin:1.3rem 0 1.5rem;padding:.2rem 0 .2rem 1rem;border-left:1px solid var(--ink);font-size:1.02rem}
+.ex b.l{font:600 .7rem/1.3 var(--font-ui);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);display:block;margin-bottom:.3rem}
+.ex p:last-child{margin-bottom:0}
+
+/* Euler grid */
+.egrid{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;font:400 .7rem/1 var(--font-ui);font-variant-numeric:tabular-nums}
+.egrid div{aspect-ratio:1;display:grid;place-items:center;border-radius:3px;color:var(--muted);background:color-mix(in srgb,var(--rule) 45%,transparent);transition:background .18s,color .18s}
+.egrid div.on{background:color-mix(in srgb,var(--prime) 22%,var(--surface));color:var(--ink)}
+.egrid div.new{background:var(--prime);color:#fff;font-weight:600}
+
+/* budget cells */
+.budget{display:flex;flex-wrap:wrap;gap:8px;margin:.7rem 0 0}
+.budget span{display:flex;gap:2px}
+.budget i{width:9px;height:16px;background:var(--prime);border-radius:1px}
+
+/* tables */
+.tw{overflow-x:auto;margin:1.2rem 0 1.4rem}
+table{border-collapse:collapse;width:100%;font-size:.98rem;line-height:1.4}
+th{font:600 .7rem/1.3 var(--font-ui);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);text-align:left;padding:.45rem .6rem .45rem 0;border-bottom:1px solid var(--ink);vertical-align:bottom}
+td{padding:.5rem .6rem .5rem 0;border-bottom:1px solid var(--rule);vertical-align:top}
+td:last-child,th:last-child{padding-right:0}
+
+.flag{font:400 .9rem/1.5 var(--font-ui);color:var(--ink);background:color-mix(in srgb,var(--whatif) 9%,var(--surface));border:1px solid color-mix(in srgb,var(--whatif) 35%,var(--rule));border-radius:6px;padding:12px 14px;margin:1.2rem 0}
+.flag b{font-weight:600}
+ol.steps{margin:1.1rem 0 1.4rem;padding:0;list-style:none;counter-reset:s;display:grid;gap:.9rem}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:2rem 1fr;font-size:1.02rem;line-height:1.5}
+ol.steps li::before{content:counter(s);font:italic 400 1.5rem/1.1 var(--font-display);color:var(--zero)}
+ol.steps b{font:600 .78rem/1.3 var(--font-ui);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);display:block;margin-bottom:.1rem}
+.tl{margin:1.1rem 0 1.4rem;padding:0;list-style:none;display:grid;gap:.55rem;font-size:1rem;line-height:1.45}
+.tl li{display:grid;grid-template-columns:4.4rem 1fr;gap:.6rem}
+.tl time{font:600 .8rem/1.75 var(--font-ui);color:var(--ink-2);font-variant-numeric:tabular-nums}
+ul.plain{margin:0 0 1.2rem;padding-left:1.15rem}
+ul.plain li{margin-bottom:.45rem}
+.chain text{font:400 11px var(--font-ui);fill:var(--ink-2)}
+.chain .nd{fill:var(--surface);stroke:var(--ink-2);stroke-width:1}
+.chain .ar{stroke:var(--ink-2);stroke-width:1;fill:none}
+.chain .blk{fill:var(--prime)}
+.chain .pulse{fill:var(--zero);display:none}
+@media (prefers-reduced-motion:no-preference){
+  .chain .pulse{display:block;animation:run 5s cubic-bezier(.45,0,.55,1) infinite}
+  @keyframes run{0%{transform:translateX(0);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translateX(272px);opacity:0}}
+}
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;align-items:start}
+footer{margin:3.5rem 0 3rem;padding-top:1rem;border-top:1px solid var(--ink);font:400 .86rem/1.55 var(--font-ui);color:var(--ink-2)}
+footer h3{margin-top:0}
+footer ul{padding-left:1.1rem;margin:0 0 1rem}
+footer li{margin-bottom:.35rem}
+code{font:400 .88em ui-monospace,SFMono-Regular,Menlo,monospace;background:color-mix(in srgb,var(--rule) 55%,transparent);padding:.05em .3em;border-radius:3px}
+</style>
+</head>
+<body>
+<div class="col">
+
+<header class="hero">
+  <p class="kicker">Riemann 1859 · Alpöge with Claude 2026</p>
+  <h1>The Riemann Hypothesis <em>in pictures</em></h1>
+  <p class="dek">Twelve figures you can play with: what the conjecture says, why primes and complex zeros are two views of one object, and how the proof announced on 20 November 2026 is reported to work.</p>
+  <figure class="fig" style="margin:0">
+    <div class="plot"><canvas id="hero" role="img" aria-label="The curve traced by zeta of one half plus i t in the complex plane for t from 0 to 50. It passes through the origin ten times."></canvas></div>
+    <p class="read" id="heroRead"></p>
+    <p class="cap">The path of <i>ζ</i>(½ + <i>it</i>) in the complex plane as <i>t</i> runs from 0 to 50. Each pass through the marked centre point is a zero of <i>ζ</i>. The hypothesis says that zeros of this kind occur on this line and nowhere else.</p>
+  </figure>
+</header>
+
+<section class="status" aria-labelledby="st-h">
+  <h3 id="st-h">Where things stand on 22 November 2026</h3>
+  <div class="st">
+    <span class="chip ok"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.6 2.6L10 3.4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Checked by machine</span>
+    <div>On 20 November Levent Alpöge, a mathematician at Anthropic, posted a four-page note saying he believes that, working with Claude, he has proved the Riemann hypothesis and its generalisation to Dirichlet <i>L</i>-functions. The proof is a Lean library of about 17 million lines in 175,187 files. On 21 November a joint statement from the Lean and Mathlib communities, endorsed by the Lean FRO and the Mathlib Initiative, certified both the statement and the proof: the main theorem is Mathlib's own definition <code>RiemannHypothesis</code>, several independent proof checkers accept it, and it rests only on Lean's three standard axioms.</div>
+  </div>
+  <div class="st">
+    <span class="chip"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="2.2" cy="6" r="1.2" fill="currentColor"/><circle cx="6" cy="6" r="1.2" fill="currentColor"/><circle cx="9.8" cy="6" r="1.2" fill="currentColor"/></svg>Not yet readable</span>
+    <div>There is no paper. The informal write-up is said to run past 250,000 pages and has not been released. Alpöge says he intends to simplify and explain the argument, and that some of the automorphic machinery Claude brought in lies outside his own expertise. Number theorists have only begun to read the code.</div>
+  </div>
+  <div class="st">
+    <span class="chip"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.6 4.3a2.4 2.4 0 1 1 3.5 2.1c-.7.4-1.1.8-1.1 1.6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="6" cy="10.3" r="1" fill="currentColor"/></svg>Open questions</span>
+    <div>People auditing the code have found internal definitions that carry less content than their names suggest, and an unreviewed paper argues from this that the proof is invalid. A participant in one verification project who logged the same pattern says it does not make the kernel-checked theorem invalid; it bears on what the intermediate statements mean. A separate 940-page human-written proof of GRH by Alessandro Masullo was released the same day; gaps were reported within hours and it is under revision.</div>
+  </div>
+</section>
+<p class="lede-note">Sections 1 to 9 are established mathematics. Sections 10 and 11 describe the announced proof from the outside, using the note and a reading guide by early readers of the code. Treat them as a first map.</p>
+
+<nav class="toc" aria-label="Contents">
+  <div><b>I · The problem</b><ol>
+    <li><a href="#s1"><span>1</span>Primes thin out smoothly, and jitter</a></li>
+    <li><a href="#s2"><span>2</span>Euler's product</a></li>
+    <li><a href="#s3"><span>3</span>ζ on the complex plane</a></li>
+    <li><a href="#s4"><span>4</span>Zeros are the frequencies of the primes</a></li>
+    <li><a href="#s5"><span>5</span>Why ½: the square-root law</a></li>
+    <li><a href="#s6"><span>6</span>The zeros look like a spectrum</a></li></ol></div>
+  <div><b>II · A world where it is a theorem</b><ol>
+    <li><a href="#s7"><span>7</span>Curves over finite fields</a></li>
+    <li><a href="#s8"><span>8</span>Stepanov's trick</a></li>
+    <li><a href="#s9"><span>9</span>The missing ingredient over the integers</a></li></ol></div>
+  <div><b>III · The announced proof</b><ol>
+    <li><a href="#s10"><span>10</span>Multiplicity from a chain of theta lifts</a></li>
+    <li><a href="#s11"><span>11</span>What a machine check settles</a></li>
+    <li><a href="#s12"><span>12</span>If it stands</a></li></ol></div>
+</nav>
+
+<main>
+<div class="part"><span>Part I</span><span>The problem</span></div>
+
+<!-- 1 -->
+<h2 id="s1"><span class="num">1</span>Primes thin out smoothly, and jitter</h2>
+<p>Write <i>π</i>(<i>x</i>) for the number of primes up to <i>x</i>. Gauss noticed as a teenager that near <i>x</i> about one number in ln <i>x</i> is prime. Adding up those densities gives a prediction:</p>
+<p class="eq"><i>π</i>(<i>x</i>) ≈ Li(<i>x</i>) = <span class="big">∫</span><sub>2</sub><sup><i>x</i></sup> <span class="fr"><span><i>dt</i></span><span>ln <i>t</i></span></span></p>
+<p>The prime number theorem (1896) proves that the ratio of the two sides tends to 1. The Riemann hypothesis concerns what is left over. It says the error is about as small as it could possibly be: of order √<i>x</i>.</p>
+
+<figure class="fig">
+  <div class="fig-h"><span class="fig-n">Figure 1</span><span class="fig-t">Counting primes against Gauss's prediction</span></div>
+  <div class="legend"><span><i style="--c:var(--prime)"></i>π(x), the true count</span><span><i style="--c:var(--law)"></i>Li(x)</span><span><i class="dash" style="--c:var(--muted)"></i>x / ln x</span></div>
+  <div class="plot"><canvas id="c1" role="img" aria-label="Line chart of the prime counting function with the logarithmic integral and x over log x."></canvas><div class="tip" id="t1" hidden></div></div>
+  <div class="ctl"><div class="btns" id="b1"><button type="button" data-n="100" aria-pressed="false">x ≤ 100</button><button type="button" data-n="10000" aria-pressed="true">x ≤ 10,000</button><button type="button" data-n="1000000" aria-pressed="false">x ≤ 1,000,000</button></div></div>
+  <p class="cap">Up close the count is a staircase with irregular steps. From far away it hugs a smooth curve. Touch the chart to read values.</p>
+</figure>
+
+<div class="ex"><b class="l">Worked example</b>
+<p>At <i>x</i> = 10<sup>6</sup> there are 78,498 primes and Li(<i>x</i>) ≈ 78,627. The miss is 129, while √<i>x</i> = 1,000. If the hypothesis holds, |<i>π</i>(<i>x</i>) − li(<i>x</i>)| &lt; √<i>x</i> · ln <i>x</i> / 8<i>π</i> for every <i>x</i> ≥ 2,657 (Schoenfeld, 1976).</p></div>
+
+<!-- 2 -->
+<h2 id="s2"><span class="num">2</span>Euler's product</h2>
+<p>For <i>s</i> &gt; 1 Euler found that a sum over all integers equals a product over all primes:</p>
+<p class="eq"><i>ζ</i>(<i>s</i>) = <span class="big">∑</span><sub><i>n</i>≥1</sub> <span class="fr"><span>1</span><span><i>n<sup>s</sup></i></span></span> = <span class="big">∏</span><sub><i>p</i></sub> <span class="fr"><span>1</span><span>1 − <i>p</i><sup>−<i>s</i></sup></span></span></p>
+<p>Expand each factor as a geometric series 1 + <i>p</i><sup>−<i>s</i></sup> + <i>p</i><sup>−2<i>s</i></sup> + ⋯ and multiply out. Every <i>n</i> appears exactly once, because every integer factors into primes in exactly one way. The product is unique factorisation written as analysis.</p>
+
+<figure class="fig">
+  <div class="fig-h"><span class="fig-n">Figure 2</span><span class="fig-t">Switch on primes one at a time and watch the integers fill in</span></div>
+  <div class="egrid" id="g2" aria-hidden="true"></div>
+  <div class="ctl"><div class="row"><label for="e2">Primes used</label><input type="range" id="e2" min="0" max="25" step="1" value="3"><output id="o2" for="e2"></output></div></div>
+  <p class="read" id="r2"></p>
+  <p class="cap">Lit cells are the numbers you can build from the primes switched on so far; the newest prime's contribution is solid. The product over those primes equals the sum of 1/n² over every lit number, including those beyond 100.</p>
+</figure>
+
+<p>Two consequences. A convergent product of non-zero factors is non-zero, so <i>ζ</i> has no zeros with Re <i>s</i> &gt; 1. Everything interesting happens further left, where the product stops converging.</p>
+
+<!-- 3 -->
+<h2 id="s3"><span class="num">3</span>ζ on the complex plane</h2>
+<p>Riemann's move was to let <i>s</i> = <i>σ</i> + <i>it</i> be complex. Each term becomes an arrow:</p>
+<p class="eq"><i>n</i><sup>−<i>s</i></sup> = <i>n</i><sup>−<i>σ</i></sup> · <i>e</i><sup>−<i>it</i> ln <i>n</i></sup></p>
+<p>Its length is <i>n</i><sup>−<i>σ</i></sup> and its angle is −<i>t</i> ln <i>n</i>, so as <i>t</i> grows the arrows spin at different speeds. Analytic continuation extends <i>ζ</i> to every <i>s</i> ≠ 1, and <i>ζ</i>(<i>s</i>) is where the arrows end up. A zero is a value of <i>s</i> at which they cancel exactly.</p>
+<p>The continued function has a mirror symmetry. With <i>ξ</i>(<i>s</i>) = ½<i>s</i>(<i>s</i> − 1)<i>π</i><sup>−<i>s</i>/2</sup> Γ(<i>s</i>/2) <i>ζ</i>(<i>s</i>), one has <i>ξ</i>(<i>s</i>) = <i>ξ</i>(1 − <i>s</i>), so zeros are symmetric about the line <i>σ</i> = ½. There are easy zeros at −2, −4, −6, … All the others lie in the strip 0 &lt; <i>σ</i> &lt; 1.</p>
+<div class="thm"><b>Riemann hypothesis</b>Every zero of <i>ζ</i> in the strip 0 &lt; <i>σ</i> &lt; 1 has <i>σ</i> = ½.</div>
+
+<figure class="fig">
+  <div class="fig-h"><span class="fig-n">Figure 3</span><span class="fig-t">Walk up a vertical line and watch where ζ takes you</span></div>
+  <div class="plot"><canvas id="c3" role="img" aria-label="The path of zeta of sigma plus i t in the complex plane as t increases, with a zoom at the origin."></canvas></div>
+  <p class="read" id="r3"></p>
+  <div class="plot" style="margin-top:.6rem"><canvas id="c3b" role="img" aria-label="Map of the absolute value of zeta over the critical strip for t from 0 to 60. Dark spots on the line sigma equals one half mark the zeros."></canvas></div>
+  <div class="ctl">
+    <div class="row"><label for="sg">σ</label><input type="range" id="sg" min="0.25" max="0.85" step="0.01" value="0.5"><output id="osg" for="sg">0.50</output></div>
+    <div class="row"><label for="tt">t</label><input type="range" id="tt" min="0" max="60" step="0.05" value="34"><output id="ott" for="tt">34.0</output></div>
+    <div class="btns"><button type="button" class="primary" id="p3">Play</button><button type="button" id="h3">Back to σ = ½</button></div>
+  </div>
+  <p class="cap">Top: the point ζ(σ + it) as t increases, with a magnified view of the origin in the corner. Bottom: a map of the strip. Each streak marks a place where |ζ| drops to 0, and every one is centred on σ = ½. The line shows the σ you are walking along. At σ = ½ the path keeps returning to 0. Move σ and it misses every time.</p>
+</figure>
+
+<p>Before this month the evidence was large and incomplete. Hardy proved in 1914 that infinitely many zeros lie on the line. Computers have confirmed the hypothesis for every zero up to height 3 × 10<sup>12</sup>. Conrey showed in 1989 that more than 40% of zeros are on the line, and in August 2026 a Lean-checked result by Alpöge and Ralph Furman at Anthropic raised that to more than 67%.</p>
+
+<!-- 4 -->
+<h2 id="s4"><span class="num">4</span>Zeros are the frequencies of the primes</h2>
+<p>Count primes with weights: let <i>ψ</i>(<i>x</i>) be the sum of ln <i>p</i> over all prime powers <i>p<sup>k</sup></i> ≤ <i>x</i>. The prime number theorem says <i>ψ</i>(<i>x</i>) ≈ <i>x</i>. Riemann's explicit formula, proved by von Mangoldt, is exact:</p>
+<p class="eq"><i>ψ</i>(<i>x</i>) = <i>x</i> − <span class="big">∑</span><sub><i>ρ</i></sub> <span class="fr"><span><i>x<sup>ρ</sup></i></span><span><i>ρ</i></span></span> − ln 2<i>π</i> − ½ ln(1 − <i>x</i><sup>−2</sup>)</p>
+<p>The sum runs over the zeros <i>ρ</i> in the strip. Pair a zero <i>ρ</i> = <i>β</i> + <i>iγ</i> with its conjugate and together they contribute one wave:</p>
+<p class="eq">− <span class="fr"><span>2<i>x<sup>β</sup></i></span><span>|<i>ρ</i>|</span></span> cos(<i>γ</i> ln <i>x</i> − arg <i>ρ</i>)</p>
+<p>The height <i>γ</i> of the zero is the pitch of the wave. Its real part <i>β</i> sets the loudness, which grows like <i>x<sup>β</sup></i>.</p>
+
+<figure class="fig">
+  <div class="fig-h"><span class="fig-n">Figure 4</span><span class="fig-t">Rebuild the primes from the zeros</span></div>
+  <div class="legend"><span><i style="--c:var(--prime)"></i>ψ(x), from primes</span><span><i style="--c:var(--zero)"></i>x minus the waves of K zeros</span></div>
+  <div class="plot"><canvas id="c4" role="img" aria-label="The Chebyshev staircase psi of x and its approximation by a sum over zeta zeros."></canvas><div class="tip" id="t4" hidden></div></div>
+  <div class="ctl">
+    <div class="row"><label for="k4">Zeros used, K</label><input type="range" id="k4" min="0" max="300" step="1" value="30"><output id="ok4" for="k4">30</output></div>
+    <div class="btns"><button type="button" class="primary" id="p4">Play from 0</button><button type="button" data-x="30" aria-pressed="false">x ≤ 30</button><button type="button" data-x="60" aria-pressed="true">x ≤ 60</button><button type="button" data-x="120" aria-pressed="false">x ≤ 120</button></div>
+  </div>
+  <h3>The three lowest notes</h3>
+  <div class="plot"><canvas id="c4b" role="img" aria-label="Three small charts showing the waves contributed by the first three zeros."></canvas></div>
+  <p class="cap">Slide K up and the smooth curve learns where every prime power sits. With no zeros it is a straight line. Each added zero is one more wave like the three shown, with higher pitch and lower volume.</p>
+</figure>
+
+<div class="ex"><b class="l">Worked example</b>
+<p>The prime powers up to 10 are 2, 3, 4, 5, 7, 8, 9, so <i>ψ</i>(10) = 3 ln 2 + 2 ln 3 + ln 5 + ln 7 = ln 2520 ≈ 7.83. The number 2520 is the least common multiple of 1, …, 10. In general <i>ψ</i>(<i>n</i>) = ln lcm(1, …, <i>n</i>).</p></div>
+
+<!-- 5 -->
+<h2 id="s5"><span class="num">5</span>Why ½: the square-root law</h2>
+<p>A zero with real part <i>β</i> produces an error of size <i>x<sup>β</sup></i>. Zeros come in mirror pairs <i>β</i> and 1 − <i>β</i>, so the best one can hope for is that every <i>β</i> equals ½. Then every wave has amplitude √<i>x</i>, and</p>
+<p class="eq"><i>ψ</i>(<i>x</i>) = <i>x</i> + <i>O</i>(√<i>x</i> ln<sup>2</sup> <i>x</i>)</p>
+<p>This statement is equivalent to the hypothesis. It is the fluctuation you get from coin flips: the running total of <i>N</i> fair ±1 tosses wanders about √<i>N</i> from zero. In those terms the hypothesis says the primes are as regular as a random-looking sequence can be. The same claim in olympiad dress: the Möbius sum <i>μ</i>(1) + ⋯ + <i>μ</i>(<i>x</i>) is <i>O</i>(<i>x</i><sup>½+<i>ε</i></sup>).</p>
+
+<figure class="fig">
+  <div class="fig-h"><span class="fig-n">Figure 5</span><span class="fig-t">The error in the prime count, measured in units of √x</span></div>
+  <div class="legend"><span><i class="box" style="--c:var(--prime)"></i>(ψ(x) − x) / √x, actual</span><span><i class="box" style="--c:var(--whatif)"></i>what if a zero sat at real part β</span></div>
+  <div class="plot"><canvas id="c5" role="img" aria-label="The normalised error of the prime counting function from one hundred to one million, with an optional hypothetical off-line zero."></canvas><div class="tip" id="t5" hidden></div></div>
+  <div class="ctl"><div class="row"><label for="b5">Rogue β</label><input type="range" id="b5" min="0.5" max="0.8" step="0.005" value="0.5"><output id="ob5" for="b5">0.500</output></div></div>
+  <p class="read" id="r5"></p>
+  <p class="cap">Between 10² and 10⁶ the real error never leaves the band from −0.80 to +0.71. Drag β above ½ to see a cartoon of a world where the first pair of zeros sits off the line: one wave grows without limit and swamps everything. (A true off-line zero would also bring a mirror twin at 1 − β.)</p>
+</figure>
+
+<!-- 6 -->
+<h2 id="s6"><span class="num">6</span>The zeros look like a spectrum</h2>
+<p>Rescale the gaps between consecutive zeros so that the average gap is 1. They do not look like gaps between randomly scattered points. They look like gaps between eigenvalues of large random Hermitian matrices: the zeros repel one another. Montgomery found this in 1973 and Odlyzko's computations confirmed it to high accuracy.</p>
+
+<figure class="fig">
+  <div class="fig-h"><span class="fig-n">Figure 6</span><span class="fig-t">Gaps between the first 600 zeros</span></div>
+  <div class="legend"><span><i class="box" style="--c:var(--zero)"></i>zeros of ζ</span><span><i style="--c:var(--ink)"></i>random-matrix prediction</span><span><i class="dash" style="--c:var(--muted)"></i>independent random points</span></div>
+  <div class="plot"><canvas id="c6" role="img" aria-label="Histogram of normalised gaps between zeta zeros with the random matrix prediction and the exponential law."></canvas><div class="tip" id="t6" hidden></div></div>
+  <p class="cap">Independent points would often sit almost on top of each other. Zeros almost never do.</p>
+</figure>
+
+<p>This is the best evidence for an old idea of Hilbert and Pólya: the heights <i>γ</i> are the eigenvalues of some self-adjoint operator. Such eigenvalues are real, which would be the hypothesis. Connes's trace-formula programme follows this route, and so does the Masullo manuscript. The announced proof takes a different road, and to see it we have to visit a parallel world.</p>
+
+<div class="part"><span>Part II</span><span>A world where it is a theorem</span></div>
+
+<!-- 7 -->
+<h2 id="s7"><span class="num">7</span>Curves over finite fields</h2>
+<p>Replace the integers by polynomials over the finite field <b>F</b><sub><i>p</i></sub>, and number fields by curves. A curve <i>C</i> of genus <i>g</i> has a zeta function built from its point counts <i>N<sub>k</sub></i> = #<i>C</i>(<b>F</b><sub><i>p<sup>k</sup></i></sub>):</p>
+<p class="eq"><i>Z</i>(<i>T</i>) = exp<span class="big">(</span><span class="big">∑</span><sub><i>k</i>≥1</sub> <i>N<sub>k</sub></i> <span class="fr"><span><i>T<sup>k</sup></i></span><span><i>k</i></span></span><span class="big">)</span> = <span class="fr"><span><i>P</i>(<i>T</i>)</span><span>(1 − <i>T</i>)(1 − <i>pT</i>)</span></span></p>
+<p>Here <i>P</i>(<i>T</i>) = (1 − <i>α</i><sub>1</sub><i>T</i>) ⋯ (1 − <i>α</i><sub>2<i>g</i></sub><i>T</i>) is a polynomial of degree 2<i>g</i>. The Riemann hypothesis for <i>C</i> says |<i>α<sub>i</sub></i>| = √<i>p</i>. Substitute <i>T</i> = <i>p</i><sup>−<i>s</i></sup> and this reads: all zeros have Re <i>s</i> = ½. The critical line has become a circle. Hasse proved it for elliptic curves in 1933 and Weil for all curves in the 1940s. Its practical meaning is a square-root error once more:</p>
+<p class="eq">|<i>N</i><sub>1</sub> − (<i>p</i> + 1)| ≤ 2<i>g</i>√<i>p</i></p>
+
+<figure class="fig">
+  <div class="fig-h"><span class="fig-n">Figure 7</span><span class="fig-t">An elliptic curve modulo p, and its two “zeros”</span></div>
+  <div class="legend"><span><i class="dotk" style="--c:var(--prime)"></i>solutions of y² = x³ + ax + b (mod p)</span><span><i class="dotk" style="--c:var(--zero)"></i>α and its conjugate</span><span><i style="--c:var(--law)"></i>circle |z| = √p</span></div>
+  <div class="duo">
+    <div class="plot"><canvas id="c7" role="img" aria-label="Grid of solutions of the elliptic curve equation modulo p."></canvas></div>
+    <div class="plot"><canvas id="c7b" role="img" aria-label="The Frobenius eigenvalues alpha and its conjugate on the circle of radius square root of p."></canvas></div>
+  </div>
+  <p class="read" id="r7"></p>
+  <div class="ctl">
+    <div class="row"><label for="a7">a</label><input type="range" id="a7" min="-5" max="5" step="1" value="-1"><output id="oa7" for="a7">−1</output></div>
+    <div class="row"><label for="bb7">b</label><input type="range" id="bb7" min="-5" max="5" step="1" value="1"><output id="obb7" for="bb7">1</output></div>
+    <div class="row"><label for="p7">p</label><input type="range" id="p7" min="0" max="22" step="1" value="9"><output id="op7" for="p7">37</output></div>
+  </div>
+  <h3>The same curve at every prime below 1,000</h3>
+  <div class="legend"><span><i class="dotk" style="--c:var(--zero)"></i>aₚ / 2√p = cos(arg α)</span><span><i style="--c:var(--law)"></i>Hasse's bound, ±1</span></div>
+  <div class="plot"><canvas id="c8" role="img" aria-label="Scatter plot of the normalised trace a p over two root p for primes below 1000. All points lie between minus one and one."></canvas><div class="tip" id="t8" hidden></div></div>
+  <p class="cap"><b style="font-weight:600">Figure 8</b> is the lower chart. Count the solutions, add one point at infinity to get N, and set aₚ = p + 1 − N. The numbers α and ᾱ with sum aₚ and product p always land on the green circle. That is the Riemann hypothesis for this curve, and you can check it by counting.</p>
+</figure>
+
+<div class="ex"><b class="l">Worked example</b>
+<p>Take <i>y</i><sup>2</sup> = <i>x</i><sup>3</sup> − <i>x</i> over <b>F</b><sub>5</sub>. The solutions are (0, 0), (1, 0), (4, 0), (2, ±1), (3, ±2). With the point at infinity, <i>N</i> = 8, so <i>a</i><sub>5</sub> = 6 − 8 = −2 and <i>α</i> = −1 ± 2<i>i</i>. Indeed |<i>α</i>|<sup>2</sup> = 5.</p></div>
+
+<!-- 8 -->
+<h2 id="s8"><span class="num">8</span>Stepanov's trick: make zeros expensive</h2>
+<p>Weil's proof needs the geometry of the surface <i>C</i> × <i>C</i>. In 1969 Stepanov found an elementary proof for a large class of curves, which Schmidt and Bombieri extended to all of them. It rests on a fact every olympiad student knows:</p>
+<div class="thm"><b>Degree bound</b>A non-zero polynomial of degree <i>D</i> has at most <i>D</i> roots, counted with multiplicity.</div>
+<p>To bound the number <i>N</i> of points, build a non-zero auxiliary polynomial that vanishes to order at least <i>m</i> at every one of them, while keeping its degree <i>D</i> under control. Then <i>N</i> · <i>m</i> ≤ <i>D</i>, so <i>N</i> ≤ <i>D</i>/<i>m</i>.</p>
+
+<figure class="fig">
+  <div class="fig-h"><span class="fig-n">Figure 9</span><span class="fig-t">Five roots, each of order m</span></div>
+  <div class="plot"><canvas id="c9" role="img" aria-label="Graph of a polynomial with five roots, each of multiplicity m."></canvas></div>
+  <div class="ctl"><div class="row"><label for="m9">Order m</label><input type="range" id="m9" min="1" max="6" step="1" value="2"><output id="om9" for="m9">2</output></div></div>
+  <div class="budget" id="bd9" aria-hidden="true"></div>
+  <p class="read" id="r9"></p>
+  <p class="cap">Higher order means flatter contact with the axis. Each unit of order at each root uses up one unit of degree, shown as one block.</p>
+</figure>
+
+<p>The auxiliary polynomial is never written down. Its existence comes from linear algebra: arrange for more free coefficients than vanishing conditions. High-order vanishing is tested with derivatives, and in characteristic <i>p</i> derivatives are generous, since (<i>x<sup>p</sup></i>)′ = 0.</p>
+<p>The result has the shape <i>N</i> ≤ main term + <i>C</i> · (<i>p</i>/<i>m</i> + <i>m</i>), and the best choice is <i>m</i> ≈ √<i>p</i>. That is where the square root comes from. Only an upper bound comes out, and that is enough: for <i>y</i><sup>2</sup> = <i>f</i>(<i>x</i>) the same argument bounds the <i>x</i> where <i>f</i>(<i>x</i>) is a non-square, the two counts add up to about <i>p</i>, and so an upper bound for each is a lower bound for the other.</p>
+
+<!-- 9 -->
+<h2 id="s9"><span class="num">9</span>The missing ingredient over the integers</h2>
+<p>Number theorists keep a dictionary between polynomials over <b>F</b><sub><i>p</i></sub> and integers.</p>
+<div class="tw"><table>
+<thead><tr><th>Polynomials <b>F</b><sub><i>p</i></sub>[<i>t</i>]</th><th>Integers <b>Z</b></th></tr></thead>
+<tbody>
+<tr><td>a polynomial <i>f</i></td><td>an integer <i>n</i></td></tr>
+<tr><td>a point <i>a</i> (the factor <i>t</i> − <i>a</i>)</td><td>a prime <i>p</i></td></tr>
+<tr><td><i>f</i> vanishes to order <i>m</i> at <i>a</i></td><td><i>p<sup>m</sup></i> divides <i>n</i></td></tr>
+<tr><td>the degree of <i>f</i></td><td>the size ln |<i>n</i>|</td></tr>
+<tr><td>roots with multiplicity ≤ degree</td><td>∑<sub><i>p</i></sub> <i>v<sub>p</sub></i>(<i>n</i>) ln <i>p</i> = ln |<i>n</i>|</td></tr>
+</tbody></table></div>
+<p>The last row is unique factorisation again: an integer cannot be divisible by more than its size allows. Chebyshev's bounds on primes around 1850 run on exactly this, and the version with a binomial coefficient is an olympiad classic. The number <span style="white-space:nowrap">C(2<i>n</i>, <i>n</i>)</span> is an integer smaller than 4<sup><i>n</i></sup>, and every prime between <i>n</i> and 2<i>n</i> divides it. Hence</p>
+<p class="eq"><span class="big">∑</span><sub><i>n</i>&lt;<i>p</i>≤2<i>n</i></sub> ln <i>p</i> ≤ ln C(2<i>n</i>, <i>n</i>) &lt; 2<i>n</i> ln 2</p>
+<p>an upper bound for a sum over primes, obtained from divisibility on one side and size on the other.</p>
+
+<figure class="fig">
+  <div class="fig-h"><span class="fig-n">Figure 10</span><span class="fig-t">The size of C(2n, n), split among the primes that divide it</span></div>
+  <div class="legend"><span><i class="box" style="--c:var(--prime)"></i>primes between n and 2n</span><span><i class="box" style="--c:var(--muted)"></i>smaller primes</span></div>
+  <div class="plot"><canvas id="c10" role="img" aria-label="A bar of length log of the central binomial coefficient, divided into segments for each prime factor."></canvas><div class="tip" id="t10" hidden></div></div>
+  <div class="ctl"><div class="row"><label for="n10">n</label><input type="range" id="n10" min="2" max="60" step="1" value="15"><output id="on10" for="n10">15</output></div></div>
+  <p class="read" id="r10"></p>
+  <p class="cap">The whole bar has length ln C(2n, n). Each segment is one prime's share, v<sub>p</sub> · ln p. The outline behind it is the ceiling 2n · ln 2. This example is an illustration of the principle chosen for this page. It is not a step of the announced proof.</p>
+</figure>
+
+<p>Chebyshev's bound is off by a constant factor. To reach the Riemann hypothesis the error has to come down to √<i>x</i>, and Stepanov's recipe then asks for vanishing of order <i>m</i> ≈ √<i>x</i>. Over <b>F</b><sub><i>p</i></sub>[<i>t</i>] you get high order by differentiating. An integer has no derivative. For half a century that was where the transfer stopped.</p>
+
+<div class="part"><span>Part III</span><span>The announced proof</span></div>
+
+<!-- 10 -->
+<h2 id="s10"><span class="num">10</span>Multiplicity from a chain of theta lifts</h2>
+<div class="flag"><b>Reported, not yet digested.</b> This section is assembled from Alpöge's four-page note and from a reading guide by early readers of the Lean code, who state that the central steps are read off the code and the announcement and have not been re-derived. Expect corrections.</div>
+<p>The note describes the argument as a descendant of Stepanov's, in which each theta lift mimics one unit of multiplicity. The guide gives this dictionary:</p>
+<div class="tw"><table>
+<thead><tr><th>Stepanov, curves over <b>F</b><sub><i>p</i></sub></th><th>Announced proof, over <b>Z</b></th></tr></thead>
+<tbody>
+<tr><td>vanishing to order <i>m</i></td><td>divisibility of an <i>m</i>-fold iterated theta lift</td></tr>
+<tr><td>counting degrees</td><td>Bost's slope inequality</td></tr>
+<tr><td>the finite extensions of <b>F</b><sub><i>p</i></sub></td><td>the layers of a cyclotomic tower of fields</td></tr>
+<tr><td>upper bounds suffice</td><td>a theorem of Landau type</td></tr>
+</tbody></table></div>
+
+<p><b>What is a theta lift?</b> A theta function such as <i>ϑ</i>(<i>z</i>) = ∑ <i>e</i><sup><i>πin</i>²<i>z</i></sup> packages a lattice into a highly symmetric function. The theta correspondence uses such a function as a kernel that carries automorphic forms from one group to a partner group. The groups here are unitary groups U(<i>X<sub>j</sub></i>) of positive-definite Hermitian spaces. On those, an automorphic form is just a function on a finite set of lattice classes, so a lift is a finite matrix with arithmetic entries, and the output of one lift can be fed into the next.</p>
+<p><b>Why would that create multiplicity?</b> The guide's model case is an elliptic curve with complex multiplication by <b>Q</b>(√−<i>d</i>), with theta function <i>ϑ</i> and period Ω. The normalised derivatives <i>D<sup>a</sup>ϑ</i>(0)/Ω<sup><i>a</i></sup> are divisible by <i>p</i> to the power <i>a</i>/<i>p</i> + <i>a</i>/<i>p</i><sup>2</sup> + ⋯ − <i>O</i>(log <i>a</i>) at every prime <i>p</i> that stays prime in that field. That exponent is Legendre's formula for the power of <i>p</i> in <i>a</i>!. Differentiating a theta function manufactures factorial-sized divisibility at many primes at once. The chain replaces “differentiate <i>m</i> times” by “lift <i>m</i> times”.</p>
+
+<figure class="fig">
+  <div class="fig-h"><span class="fig-n">Figure 11</span><span class="fig-t">The auxiliary object: a chain of m lifts (schematic)</span></div>
+  <svg class="chain" viewBox="0 0 340 150" role="img" aria-label="A chain of unitary groups U of X zero to U of X m connected by theta lifts. Under each group a stack of blocks grows by one per lift." style="width:100%;height:auto;display:block">
+    <defs><marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8z" fill="var(--ink-2)"/></marker></defs>
+    <circle class="pulse" cx="34" cy="43" r="3.5"/>
+    <rect class="nd" x="6" y="29" width="56" height="28" rx="4"/><text x="34" y="47" text-anchor="middle">U(X₀)</text>
+    <rect class="nd" x="86" y="29" width="56" height="28" rx="4"/><text x="114" y="47" text-anchor="middle">U(X₁)</text>
+    <rect class="nd" x="166" y="29" width="56" height="28" rx="4"/><text x="194" y="47" text-anchor="middle">U(X₂)</text>
+    <rect class="nd" x="278" y="29" width="56" height="28" rx="4"/><text x="306" y="47" text-anchor="middle">U(Xₘ)</text>
+    <path class="ar" d="M64 43H84" marker-end="url(#ah)"/><text x="74" y="22" text-anchor="middle">Θ₀</text>
+    <path class="ar" d="M144 43H164" marker-end="url(#ah)"/><text x="154" y="22" text-anchor="middle">Θ₁</text>
+    <path class="ar" d="M224 43H238"/><text x="250" y="47" text-anchor="middle">⋯</text><path class="ar" d="M262 43H276" marker-end="url(#ah)"/><text x="250" y="22" text-anchor="middle">m ≈ √X lifts</text>
+    <text x="34" y="76" text-anchor="middle">0</text>
+    <rect class="blk" x="104" y="68" width="20" height="6" rx="1"/>
+    <rect class="blk" x="184" y="68" width="20" height="6" rx="1"/><rect class="blk" x="184" y="76" width="20" height="6" rx="1"/>
+    <g><rect class="blk" x="296" y="68" width="20" height="6" rx="1"/><rect class="blk" x="296" y="76" width="20" height="6" rx="1"/><rect class="blk" x="296" y="84" width="20" height="6" rx="1"/><rect class="blk" x="296" y="92" width="20" height="6" rx="1"/><rect class="blk" x="296" y="100" width="20" height="6" rx="1"/><rect class="blk" x="296" y="108" width="20" height="6" rx="1"/><rect class="blk" x="296" y="116" width="20" height="6" rx="1"/></g>
+    <text x="8" y="142">units of divisibility at inert primes</text><text x="332" y="142" text-anchor="end">m</text>
+  </svg>
+  <p class="cap">Each lift is reported to add one unit of divisibility, the way each derivative adds one unit of vanishing in Stepanov's proof. The drawing shows the bookkeeping only. The lifts themselves live in the theory of automorphic forms on higher-rank groups.</p>
+</figure>
+
+<p>Put together, the guide's outline runs like this.</p>
+<ol class="steps">
+<li><div><b>Target</b>A smoothed sum over prime powers, <i>G</i>(<i>x</i>) = ∑<sub><i>n</i>≤<i>x</i></sub> Λ(<i>n</i>)(<i>x</i>/<i>n</i> − 1) − <i>x</i>(ln <i>x</i> − 1 − <i>γ</i>), and its twists by Dirichlet characters. By the explicit formula it is a sum of waves <i>x<sup>β</sup></i> over zeros. Goal: <i>G</i>(<i>x</i>) ≤ <i>x</i><sup>½+<i>ε</i></sup> on windows [<i>Y</i>, <i>Y</i><sup>3/2</sup>] for arbitrarily large <i>Y</i>.</div></li>
+<li><div><b>Auxiliary object</b>The composite Θ = Θ<sub><i>m</i>−1</sub> ∘ ⋯ ∘ Θ<sub>0</sub> of theta lifts, each twisted by a Hecke character. It plays the part of Stepanov's polynomial.</div></li>
+<li><div><b>Finite primes</b>Θ is integral, and at inert primes it is more divisible than integrality alone would give. The total gain is a weighted sum of ln <i>p</i>, which is a sum over primes.</div></li>
+<li><div><b>The infinite place</b>The size of Θ is computed with classical exact formulas: Chowla and Selberg's for the period Ω, Siegel's mass formula, and the Rallis inner product formula.</div></li>
+<li><div><b>Slope inequality</b>Bost's inequality is the arithmetic form of the degree bound: divisibility at the finite primes has to be paid for by size at infinity. Out comes an upper bound for the prime sum with error about <i>x</i>/<i>m</i> + <i>m</i> + √<i>x</i>.</div></li>
+<li><div><b>Landau</b>A one-sided bound this strong leaves no room for a zero with real part above ½. Figure 5 shows why: its wave would swing up through the ceiling. The functional equation reflects the left half of the strip onto the right, so every zero is on the line. Running the argument for each Dirichlet character gives the generalised hypothesis for Dirichlet <i>L</i>-functions.</div></li>
+</ol>
+
+<figure class="fig">
+  <div class="fig-h"><span class="fig-n">Figure 12</span><span class="fig-t">Why the chain has about √x links</span></div>
+  <div class="legend"><span><i style="--c:var(--ink)"></i>total error</span><span><i class="dash" style="--c:var(--prime)"></i>x / m</span><span><i class="dash" style="--c:var(--zero)"></i>m</span><span><i style="--c:var(--law)"></i>√x</span></div>
+  <div class="plot"><canvas id="c12" role="img" aria-label="Log-log chart of the error terms x over m, m and square root of x against the chain length m, with their sum minimised at m equal to the square root of x."></canvas></div>
+  <div class="ctl">
+    <div class="row"><label for="m12">Lifts m</label><input type="range" id="m12" min="0" max="1" step="0.005" value="0.2"><output id="om12" for="m12"></output></div>
+    <div class="btns" id="b12"><button type="button" data-e="4" aria-pressed="false">x = 10⁴</button><button type="button" data-e="6" aria-pressed="true">x = 10⁶</button><button type="button" data-e="8" aria-pressed="false">x = 10⁸</button></div>
+  </div>
+  <p class="read" id="r12"></p>
+  <p class="cap">The reported error is about x/m + m + √x, up to factors x<sup>O(ε)</sup> left out here. Too few lifts waste the available divisibility. Too many cost more than they earn. The balance point is m ≈ √x, the same balance as in Stepanov's proof.</p>
+</figure>
+
+<p><b>Who did what.</b> By Alpöge's account he had aimed at this problem since his student days and steered the work toward a setting modelled on a simpler toy problem. He credits Claude with proposing the chain of lifts and with outpacing him near the end. The note's research timeline, from 6 October to 16 November, was compiled by Claude, and he warns that it is rough. The note does not say which Claude model was used.</p>
+
+<!-- 11 -->
+<h2 id="s11"><span class="num">11</span>What a machine check settles</h2>
+<p>Lean's kernel checks one thing: that a proof term has the type it claims. Here the type is Mathlib's <code>RiemannHypothesis</code>, a definition written by other people years earlier. Two comparison tools confirmed that the release proves that exact statement. Independent kernels re-checked the full proof, and an axiom audit found only <code>propext</code>, <code>Classical.choice</code> and <code>Quot.sound</code>. That settles whether the formal statement follows from the axioms, as far as the checkers themselves can be trusted.</p>
+<p>It leaves two things open. One is whether every definition underneath says what mathematicians mean by it; Mathlib's statement is short and widely used, which helps. The other is the why. A proof nobody can read cannot be taught, shortened or extended. Terence Tao's first reading is that the argument combines recent results from the Langlands programme and arithmetic geometry and will take time to absorb. James Maynard told <i>Nature</i> he suspects it will turn out to be correct. Alpöge expects much shorter proofs to follow.</p>
+<ul class="tl">
+<li><time>6 Oct</time><span>First key step in the note's timeline: a “Stepanov determinant”.</span></li>
+<li><time>20 Oct</time><span>The argument commits to a weighted sum over primes.</span></li>
+<li><time>15 Nov</time><span>Iterated theta lifts supply the missing multiplicity.</span></li>
+<li><time>16 Nov</time><span>The argument reaches the generalised hypothesis.</span></li>
+<li><time>20 Nov</time><span>Note and Lean archive posted. Andrew Sutherland at MIT reports an independent build of all 175,187 modules with no errors. Vakil releases Masullo's manuscript.</span></li>
+<li><time>21 Nov</time><span>Joint statement from the Lean and Mathlib communities, endorsed by the Lean FRO and the Mathlib Initiative, certifying statement and proof.</span></li>
+<li><time>22 Nov</time><span>A sandboxed rebuild reproduces the published proof export byte for byte. Auditors continue to log open questions about trivial internal definitions.</span></li>
+</ul>
+<p>The October and mid-November dates come from the note itself and have not been checked independently. The Clay Institute's rules for the million-dollar prize require publication, a two-year wait and general acceptance.</p>
+
+<!-- 12 -->
+<h2 id="s12"><span class="num">12</span>If it stands</h2>
+<p>Decades of theorems begin with the words “assume GRH”. For Dirichlet <i>L</i>-functions they would lose that clause.</p>
+<ul class="plain">
+<li>Prime counting with square-root error: |<i>π</i>(<i>x</i>) − li(<i>x</i>)| &lt; √<i>x</i> ln <i>x</i> / 8<i>π</i> for <i>x</i> ≥ 2,657.</li>
+<li>Primes spread just as evenly among the residue classes of any modulus.</li>
+<li>Miller's primality test becomes a proven deterministic algorithm: checking bases up to 2 ln<sup>2</sup> <i>n</i> is enough (Bach).</li>
+</ul>
+<p>The method may matter more than the statement. If the chain of lifts really does the work of a derivative of an integer, it is a new tool, and the obvious next targets are the <i>L</i>-functions the announcement does not cover.</p>
+</main>
+
+<footer>
+<h3>Sources</h3>
+<ul>
+<li><a href="https://alpo.ge">Levent Alpöge's website</a>, where the note “Remark” and the Lean archive were posted</li>
+<li><a href="https://nasqret.github.io/riemann-rev/guide/proof-guide.pdf">A guide to the architecture of the announced proof</a> (independent reading project)</li>
+<li><a href="https://lean4.dev/proofs/riemann-hypothesis-claim">lean4.dev: the claimed proof, delivered in Lean</a></li>
+<li><a href="https://officechai.com/ai/lean-community-certifies-levent-alpoges-claude-assisted-proof-of-the-riemann-hypothesis-as-correct/">Coverage of the Lean FRO and Mathlib Initiative joint statement</a></li>
+<li><a href="https://kingy.ai/blog/levent-alpoge-claude-riemann-hypothesis-proof/">Verification log summary, including Sutherland's build</a></li>
+<li><a href="https://www.nature.com/articles/d41586-026-03812-7">Nature</a> and <a href="https://www.science.org/content/article/ai-may-have-solved-math-s-greatest-mystery-can-humans-understand-answer">Science</a> news reports</li>
+<li><a href="https://github.com/aapolipponen/rh-lean-check-lumi/issues/2">Open question 10: a degenerate geometric instance</a>, and the <a href="https://philpapers.org/rec/NIEIOT-2">unreviewed paper</a> arguing invalidity</li>
+<li><a href="https://johncarlosbaez.wordpress.com/2026/11/22/masullo-on-the-riemann-hypothesis/">John Baez on Masullo's manuscript</a></li>
+<li><a href="https://riemannhypothesisclaude.org/">Independent status tracker</a></li>
+</ul>
+<p>Every chart is computed in your browser: primes by sieve to 10⁶, ζ by Borwein's algorithm, point counts by brute force. The first 600 zeros were computed beforehand with mpmath. Built by Claude on 22 November 2026.</p>
+</footer>
+</div>
+
+<script>
+/* ---------- number-theory helpers (pure functions) ---------- */
+const RH = {};
+RH.sieve = function (N) {
+  const comp = new Uint8Array(N + 1), primes = [];
+  for (let i = 2; i <= N; i++) {
+    if (!comp[i]) { primes.push(i); for (let j = i * i; j <= N; j += i) comp[j] = 1; }
+  }
+  return { comp, primes };
+};
+RH.tables = function (N) {
+  const { comp, primes } = RH.sieve(N);
+  const pi = new Uint32Array(N + 1), psi = new Float64Array(N + 1);
+  for (const p of primes) { const L = Math.log(p); for (let q = p; q <= N; q *= p) psi[q] = L; }
+  let c = 0, s = 0;
+  for (let n = 0; n <= N; n++) { if (n > 1 && !comp[n]) c++; pi[n] = c; s += psi[n]; psi[n] = s; }
+  return { comp, primes, pi, psi };
+};
+RH.li = function (x) {
+  const L = Math.log(x); let s = 0.5772156649015329 + Math.log(L), term = 1;
+  for (let k = 1; k < 400; k++) { term *= L / k; const a = term / k; s += a; if (a < 1e-13 * Math.abs(s)) break; }
+  return s;
+};
+RH.LI2 = 1.0451637801174927;
+/* Riemann zeta by Borwein's alternating-series algorithm; fine for 0 < sigma, |t| <= 70 */
+(function () {
+  const n = 90, d = new Float64Array(n + 1), ln = new Float64Array(n + 1);
+  let c = 1 / n, s = 0;
+  for (let i = 0; i <= n; i++) { s += c; d[i] = n * s; c *= 4 * (n + i) * (n - i) / ((2 * i + 1) * (2 * i + 2)); }
+  const w = new Float64Array(n);
+  for (let k = 0; k < n; k++) { w[k] = (k & 1 ? -1 : 1) * (d[k] / d[n] - 1); ln[k] = Math.log(k + 1); }
+  const LN2 = Math.LN2;
+  RH.zeta = function (sig, t, out) {
+    let re = 0, im = 0;
+    for (let k = 0; k < n; k++) {
+      const m = w[k] * Math.exp(-sig * ln[k]), a = t * ln[k];
+      re += m * Math.cos(a); im -= m * Math.sin(a);
+    }
+    const p = Math.pow(2, 1 - sig), dr = 1 - p * Math.cos(t * LN2), di = p * Math.sin(t * LN2);
+    const den = dr * dr + di * di;
+    out[0] = -(re * dr + im * di) / den; out[1] = -(im * dr - re * di) / den;
+    return out;
+  };
+})();
+/* points on y^2 = x^3 + a x + b over F_p (p >= 5), including the point at infinity */
+RH.ecCount = function (a, b, p, collect) {
+  const cnt = new Uint8Array(p), roots = collect ? [] : null;
+  for (let y = 0; y < p; y++) cnt[(y * y) % p]++;
+  let N = 1; const pts = [];
+  for (let x = 0; x < p; x++) {
+    let v = (((x * x) % p) * x + a * x + b) % p; if (v < 0) v += p;
+    N += cnt[v];
+    if (collect && cnt[v]) for (let y = 0; y < p; y++) if ((y * y) % p === v) pts.push(x, y);
+  }
+  let disc = (4 * a * a * a + 27 * b * b) % p; if (disc < 0) disc += p;
+  return { N, ap: p + 1 - N, pts, singular: disc === 0 };
+};
+/* exponent of p in C(2n, n) */
+RH.vBinom = function (n, p) { let v = 0; for (let q = p; q <= 2 * n; q *= p) v += Math.floor(2 * n / q) - 2 * Math.floor(n / q); return v; };
+
+
+</script>
+<script>
+(function(){
+'use strict';
+const ZEROS = [14.13473,21.02204,25.01086,30.42488,32.93506,37.58618,40.91872,43.32707,48.00515,49.77383,52.97032,56.44625,59.34704,60.83178,65.11254,67.07981,69.5464,72.06716,75.70469,77.14484,79.33738,82.91038,84.73549,87.42527,88.80911,92.4919,94.65134,95.87063,98.83119,101.31785,103.72554,105.44662,107.16861,111.02954,111.87466,114.32022,116.22668,118.79078,121.37013,122.94683,124.25682,127.51668,129.5787,131.08769,133.49774,134.75651,138.11604,139.73621,141.12371,143.11185,146.00098,147.42277,150.05352,150.92526,153.02469,156.11291,157.59759,158.84999,161.18896,163.03071,165.53707,167.18444,169.09452,169.91198,173.41154,174.75419,176.44143,178.37741,179.91648,182.20708,184.87447,185.59878,187.22892,189.41616,192.02666,193.07973,195.2654,196.87648,198.01531,201.26475,202.49359,204.18967,205.3947,207.90626,209.57651,211.69086,213.34792,214.54704,216.16954,219.0676,220.71492,221.43071,224.007,224.98332,227.42144,229.33741,231.25019,231.98724,233.6934,236.52423,237.76982,239.55548,241.04916,242.82327,244.0709,247.13699,248.10199,249.57369,251.01495,253.06999,255.30626,256.38071,258.61044,259.87441,260.80508,263.57389,265.55785,266.61497,267.92192,269.97045,271.49406,273.45961,275.58749,276.45205,278.25074,279.22925,282.46511,283.21119,284.83596,286.66745,287.91192,289.57985,291.84629,293.55843,294.96537,295.57325,297.97928,299.84033,301.64933,302.69675,304.86437,305.72891,307.2195,310.10946,311.16514,312.4278,313.98529,315.47562,317.73481,318.8531,321.16013,322.14456,323.46697,324.86287,327.4439,329.03307,329.95324,331.47447,333.64538,334.21135,336.84185,338.33999,339.85822,341.04226,342.05488,344.6617,346.34787,347.27268,349.31626,350.40842,351.87865,353.4889,356.01757,357.1513,357.95269,359.74375,361.28936,363.33133,364.73602,366.21271,367.99358,368.96844,370.05092,373.06193,373.86487,375.82591,376.32409,378.43668,379.87298,381.48447,383.44353,384.95612,385.8613,387.22289,388.84613,391.45608,392.24508,393.42774,395.58287,396.38185,397.91874,399.98512,401.83923,402.86192,404.23644,405.13439,407.58146,408.94725,410.51387,411.97227,413.26274,415.01881,415.45521,418.38771,419.86136,420.64383,422.07671,423.71658,425.06988,427.20883,428.12791,430.32875,431.30131,432.13864,433.88922,436.16101,437.5817,438.62174,439.91844,441.6832,442.90455,444.31934,446.86062,447.4417,449.14855,450.12695,451.40331,453.98674,454.97468,456.32843,457.90389,459.51342,460.08794,462.06537,464.05729,465.67154,466.57029,467.43905,469.536,470.77366,472.79917,473.83523,475.60034,476.76902,478.07526,478.94218,481.83034,482.83478,483.85143,485.53915,486.52872,488.38057,489.66176,491.39882,493.31444,493.958,495.35883,496.4297,498.58078,500.30908,501.60445,502.27627,504.49977,505.41523,506.46415,508.8007,510.26423,511.56229,512.62314,513.66899,515.43506,517.58967,518.23422,520.10631,521.52519,522.4567,523.96053,525.07739,527.90364,528.40621,529.80623,530.86692,532.68818,533.77963,535.66431,537.06976,538.42853,540.21317,540.63139,541.84744,544.32389,545.63683,547.01091,547.93161,549.49757,550.97001,552.04957,553.76497,555.79202,556.89948,557.56466,559.31624,560.24081,562.55921,564.16088,564.50606,566.69879,567.73176,568.92396,570.05111,572.41998,573.61461,575.09389,575.80725,577.039,579.09883,580.13696,581.94658,583.23609,584.56171,585.98456,586.74277,588.13966,590.6604,591.72586,592.57136,593.97471,595.72815,596.36277,598.49308,599.54564,601.60214,602.57917,603.62562,604.61622,606.38346,608.41322,609.38958,610.83916,611.77421,613.59978,614.64624,615.53856,618.11283,619.18448,620.27289,621.70929,622.375,624.2699,626.01928,627.2684,628.32586,630.47389,630.80578,632.22514,633.54686,635.5238,637.39719,637.92551,638.92794,640.69479,641.9455,643.27888,644.99058,646.34819,647.76175,648.7864,650.19752,650.66868,653.64957,654.30192,655.70946,656.96408,658.17561,659.66385,660.71673,662.29659,664.2446,665.34276,666.51515,667.14849,668.97585,670.32359,672.45818,673.04358,674.3559,676.13967,677.23018,677.80044,679.7422,681.89499,682.60274,684.01355,684.97263,686.16322,687.96154,689.36894,690.47474,692.45168,693.17697,694.53391,695.72634,696.62607,699.1321,700.29674,701.30174,702.22734,704.03384,705.12581,706.18465,708.26907,709.22959,711.13027,711.90029,712.74938,714.08277,716.1124,717.48257,718.74279,719.6971,721.35116,722.2775,723.84582,724.56261,727.0564,728.40548,728.75875,730.41648,731.41735,732.81805,734.78964,735.76546,737.05293,738.58042,739.90952,740.57381,741.75734,743.89501,745.34499,746.49931,747.67456,748.24275,750.65595,750.96638,752.88762,754.32237,755.83931,756.76825,758.10173,758.90024,760.28237,762.70003,763.59307,764.30752,766.08754,767.21847,768.28146,769.69341,771.07084,772.96162,774.11774,775.04785,775.99971,777.29975,779.15708,780.34893,782.13766,782.59794,784.28882,785.73909,786.46115,787.46846,790.05909,790.83162,792.42771,792.88865,794.48379,795.6066,797.26347,798.70757,799.65434,801.60425,802.54198,803.2431,804.76224,805.86164,808.15181,809.19778,810.0818,811.18436,812.77111,814.04591,814.87054,816.72774,818.38067,819.20464,820.7219,821.71345,822.19776,824.52629,826.03929,826.90581,828.34017,829.43701,830.89588,831.79978,833.00364,834.65192,836.69358,837.34734,838.24902,839.46539,841.03639,842.04135,844.1662,844.80599,846.19477,847.97172,848.48928,849.86227,850.64545,853.16311,854.09551,855.28671,856.48412,857.31074,858.90403,860.41067,861.1711,863.18972,864.34082,865.59466,866.42374,867.69312,868.67049,870.8469,872.18875,873.09898,873.90839,875.98529,876.60083,877.6547,879.38095,880.83465,882.3867,883.43033,884.19874,885.2723,886.8528,888.47557,889.73529,890.81313,892.38643,893.11912,894.88629,895.39792,896.63225,899.22152,899.85888,900.84974,902.24321,903.09967,904.7029,905.82994,907.65673,908.33354,910.18633,911.23495,912.33105,912.824,914.7301,916.355,917.82538,918.83654,919.44834,921.1564,922.50063,923.28572,924.77348,926.55155,927.85086,928.66366,929.87409,931.00921,931.85274,934.38531,934.99542,936.22865,937.53293,939.0243];
+const T = RH.tables(1e6);
+const $ = s => document.querySelector(s);
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+const FONT = '11px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif';
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fmt = n => n.toLocaleString('en-US');
+const SUP = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+const sup = n => String(n).split('').map(c => SUP[c] || c).join('');
+const minus = v => String(v).replace('-', '−');
+
+/* ---------- theme colours ---------- */
+const COL = {};
+function readColors(){
+  const s = getComputedStyle(document.documentElement);
+  ['paper','surface','ink','ink-2','muted','rule','grid','prime','zero','law','whatif','heat0','heat1'].forEach(k => COL[k] = s.getPropertyValue('--' + k).trim());
+}
+const hex = h => [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)];
+const figs = [];
+let mapCache = null;
+function redrawAll(){ readColors(); mapCache = null; figs.forEach(f => f()); }
+
+/* ---------- canvas helpers ---------- */
+function prep(cv, H){
+  const dpr = Math.min(window.devicePixelRatio || 1, 3), W = cv.clientWidth || 320;
+  const w = Math.round(W * dpr), h = Math.round(H * dpr);
+  if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+  cv.style.height = H + 'px';
+  const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+  g.font = FONT; g.lineJoin = 'round'; g.lineCap = 'round';
+  return { g, W, H };
+}
+function frame(cv, H, o){
+  const { g, W } = prep(cv, H);
+  const ml = o.ml ?? 38, mr = o.mr ?? 10, mt = o.mt ?? 10, mb = o.mb ?? 24, pw = W - ml - mr, ph = H - mt - mb;
+  const fx = o.xlog ? Math.log : (v => v), fy = o.ylog ? Math.log : (v => v);
+  const a = fx(o.x0), b = fx(o.x1), c = fy(o.y0), d = fy(o.y1);
+  const X = v => ml + (fx(v) - a) / (b - a) * pw, Y = v => mt + (1 - (fy(v) - c) / (d - c)) * ph;
+  const Xi = px => { const u = a + (px - ml) / pw * (b - a); return o.xlog ? Math.exp(u) : u; };
+  g.lineWidth = 1; g.textBaseline = 'middle'; g.textAlign = 'right';
+  (o.yticks || []).forEach(t => { const y = Math.round(Y(t.v)) + .5; g.strokeStyle = COL.grid; g.beginPath(); g.moveTo(ml, y); g.lineTo(W - mr, y); g.stroke(); g.fillStyle = COL.muted; g.fillText(t.l, ml - 6, y); });
+  g.textBaseline = 'top'; g.textAlign = 'center';
+  (o.xticks || []).forEach(t => { const x = Math.round(X(t.v)) + .5; g.strokeStyle = COL.rule; g.beginPath(); g.moveTo(x, mt + ph); g.lineTo(x, mt + ph + 4); g.stroke(); g.fillStyle = COL.muted; const tw = g.measureText(t.l).width / 2 + 1; g.fillText(t.l, Math.min(W - tw, Math.max(tw, x)), mt + ph + 8); });
+  if (o.xtitle) { g.fillStyle = COL.muted; g.fillText(o.xtitle, ml + pw / 2, mt + ph + 23); }
+  if (!o.nobase) { g.strokeStyle = COL.rule; g.beginPath(); g.moveTo(ml, mt + ph + .5); g.lineTo(W - mr, mt + ph + .5); g.stroke(); }
+  return { g, W, H, X, Y, Xi, ml, mr, mt, mb, pw, ph };
+}
+const clip = f => { f.g.save(); f.g.beginPath(); f.g.rect(f.ml, f.mt - 2, f.pw, f.ph + 3); f.g.clip(); };
+function stroke(g, color, w, dash){ g.strokeStyle = color; g.lineWidth = w; g.setLineDash(dash || []); g.stroke(); g.setLineDash([]); }
+function curve(g, n, px, py, color, w, dash){ g.beginPath(); for (let i = 0; i < n; i++) { const x = px(i), y = py(i); i ? g.lineTo(x, y) : g.moveTo(x, y); } stroke(g, color, w, dash); }
+function dot(g, x, y, r, color){ g.beginPath(); g.arc(x, y, r + 2, 0, 7); g.fillStyle = COL.surface; g.fill(); g.beginPath(); g.arc(x, y, r, 0, 7); g.fillStyle = color; g.fill(); }
+function nice(a, b, n){ const s0 = (b - a) / n, mag = Math.pow(10, Math.floor(Math.log10(s0))), r = s0 / mag, st = (r < 1.5 ? 1 : r < 3.5 ? 2 : r < 7.5 ? 5 : 10) * mag, out = []; for (let v = Math.ceil(a / st - 1e-9) * st; v <= b + st * 1e-6; v += st) out.push(+v.toFixed(10)); return out; }
+const lab = v => { const a = Math.abs(v); return a >= 1e6 ? (v / 1e6) + 'M' : a >= 1e4 ? (v / 1e3) + 'K' : fmt(v); };
+const tk = (arr, f) => arr.map(v => ({ v, l: (f || lab)(v) }));
+function tipShow(tip, px, py, title, rows){
+  tip.replaceChildren();
+  if (title) tip.appendChild(el('div', 'tip-h', title));
+  rows.forEach(r => { const d = el('div', 'tip-r'); if (r.c) { const k = el('span', 'key'); k.style.setProperty('--k', r.c); d.appendChild(k); } d.appendChild(el('b', null, r.v)); d.appendChild(el('span', null, r.l)); tip.appendChild(d); });
+  tip.hidden = false;
+  const W = tip.parentNode.clientWidth, tw = tip.offsetWidth; let x = px + 12; if (x + tw > W - 2) x = px - tw - 12; if (x < 2) x = 2;
+  tip.style.left = x + 'px'; tip.style.top = Math.max(2, py - 12) + 'px';
+}
+function hover(cv, move, leave){
+  const h = e => { const r = cv.getBoundingClientRect(); move(e.clientX - r.left, e.clientY - r.top); };
+  cv.addEventListener('pointermove', h); cv.addEventListener('pointerdown', h);
+  cv.addEventListener('pointerleave', leave); cv.addEventListener('pointercancel', leave);
+}
+function pressGroup(btns, cb){ btns.forEach(b => b.addEventListener('click', () => { btns.forEach(o => o.setAttribute('aria-pressed', o === b ? 'true' : 'false')); cb(b); })); }
+function setRead(node, parts){ node.replaceChildren(); parts.forEach((p, i) => { if (i) node.appendChild(document.createTextNode(' ')); if (typeof p === 'string') node.appendChild(document.createTextNode(p)); else node.appendChild(el(p.b ? 'b' : 'span', p.dim ? 'dim' : null, p.t.replace(/^\s+/, ''))); }); }
+
+/* ---------- zeta path (shared by hero and figure 3) ---------- */
+const DT = 0.02, TM = 60, NP = Math.round(TM / DT) + 1;
+function zpath(sig){ const re = new Float32Array(NP), im = new Float32Array(NP), o = [0, 0]; for (let i = 0; i < NP; i++) { RH.zeta(sig, i * DT, o); re[i] = o[0]; im[i] = o[1]; } return { re, im, sig }; }
+function drawTrace(cv, H, P, i1, o){
+  const { g, W } = prep(cv, H), m = 12;
+  let x0 = -0.35, x1 = 0.35, y0 = -0.35, y1 = 0.35;
+  const iEnd = o.iMax || NP - 1;
+  for (let i = Math.round(4 / DT); i <= iEnd; i++) { const a = P.re[i], b = P.im[i]; if (a < x0) x0 = a; if (a > x1) x1 = a; if (b < y0) y0 = b; if (b > y1) y1 = b; }
+  if (P.sig === 0.5) x0 = Math.min(x0, -1.5);
+  const s = Math.min((W - 2 * m) / (x1 - x0), (H - 2 * m) / (y1 - y0));
+  const ox = m + ((W - 2 * m) - s * (x1 - x0)) / 2, oy = m + ((H - 2 * m) - s * (y1 - y0)) / 2;
+  const X = v => ox + (v - x0) * s, Y = v => oy + (y1 - v) * s;
+  // axes
+  g.strokeStyle = COL.rule; g.lineWidth = 1; g.beginPath(); g.moveTo(0, Math.round(Y(0)) + .5); g.lineTo(W, Math.round(Y(0)) + .5); g.moveTo(Math.round(X(0)) + .5, 0); g.lineTo(Math.round(X(0)) + .5, H); g.stroke();
+  g.fillStyle = COL.muted; g.textAlign = 'center'; g.textBaseline = 'top';
+  for (let v = Math.ceil(x0); v <= x1; v++) { if (!v) continue; const x = Math.round(X(v)) + .5; g.beginPath(); g.moveTo(x, Y(0) - 3); g.lineTo(x, Y(0) + 3); g.stroke(); g.fillText(minus(v), x, Y(0) + 6); }
+  g.textAlign = 'left'; g.textBaseline = 'middle';
+  for (let v = Math.ceil(y0); v <= y1; v++) { if (!v) continue; const y = Math.round(Y(v)) + .5; g.beginPath(); g.moveTo(X(0) - 3, y); g.lineTo(X(0) + 3, y); g.stroke(); g.fillText(minus(v) + 'i', X(0) + 7, y); }
+  g.textAlign = 'right'; g.textBaseline = 'bottom'; g.fillText('Re', W - 4, Y(0) - 4);
+  // path
+  const seg = (a, b, alpha, w, fx, fy) => { if (b <= a) return; g.globalAlpha = alpha; g.beginPath(); for (let i = a; i <= b; i++) { const x = fx(P.re[i]), y = fy(P.im[i]); i === a ? g.moveTo(x, y) : g.lineTo(x, y); } stroke(g, COL.zero, w); g.globalAlpha = 1; };
+  const tail = Math.max(0, i1 - Math.round((o.tail || 3) / DT));
+  if (o.ghost) seg(0, iEnd, .32, 1.4, X, Y); else seg(0, tail, .5, 1.5, X, Y);
+  seg(tail, i1, 1, 2.2, X, Y);
+  // origin marker
+  g.beginPath(); g.arc(X(0), Y(0), 5, 0, 7); g.fillStyle = COL.surface; g.fill(); stroke(g, COL.ink, 1.5);
+  dot(g, X(P.re[i1]), Y(P.im[i1]), 4.5, COL.zero);
+  // inset zoom at the origin
+  if (o.inset) {
+    const B = Math.min(96, Math.round(W * 0.28)), bx = 6, by = 6, hw = 0.2, zs = B / (2 * hw);
+    g.fillStyle = COL.surface; g.fillRect(bx, by, B, B + 15);
+    g.save(); g.beginPath(); g.rect(bx, by, B, B); g.clip();
+    const ZX = v => bx + B / 2 + v * zs, ZY = v => by + B / 2 - v * zs;
+    g.strokeStyle = COL.rule; g.lineWidth = 1; g.beginPath(); g.moveTo(bx, by + B / 2 + .5); g.lineTo(bx + B, by + B / 2 + .5); g.moveTo(bx + B / 2 + .5, by); g.lineTo(bx + B / 2 + .5, by + B); g.stroke();
+    seg(0, i1, .9, 1.6, ZX, ZY);
+    g.beginPath(); g.arc(ZX(0), ZY(0), 4, 0, 7); stroke(g, COL.ink, 1.5);
+    const hx = P.re[i1], hy = P.im[i1]; if (Math.abs(hx) < hw && Math.abs(hy) < hw) dot(g, ZX(hx), ZY(hy), 4, COL.zero);
+    g.restore();
+    g.strokeStyle = COL.rule; g.lineWidth = 1; g.strokeRect(bx + .5, by + .5, B, B);
+    g.fillStyle = COL.muted; g.textAlign = 'left'; g.textBaseline = 'top'; g.fillText('×' + Math.round(zs / s) + ' zoom at 0', bx + 2, by + B + 3);
+  }
+}
+
+/* ---------- hero ---------- */
+(function(){
+  const cv = $('#hero'), read = $('#heroRead'), P = zpath(0.5), iMax = Math.round(50 / DT);
+  let t = reduced ? 50 : 34, visible = true, last = 0, raf = 0;
+  const H = () => Math.round(Math.min(340, Math.max(240, cv.clientWidth * 0.82)));
+  function draw(){
+    const i = Math.min(iMax, Math.round(t / DT));
+    drawTrace(cv, H(), P, i, { ghost: true, tail: 5, iMax });
+    const k = ZEROS.filter(z => z <= t).length;
+    setRead(read, [{ t: 't = ' + t.toFixed(1), b: 1 }, { t: '   zeros passed: ' + k + ' of 10', dim: 1 }, ...(k ? [{ t: '   latest at t ≈ ' + ZEROS[k - 1].toFixed(2), dim: 1 }] : [])]);
+  }
+  function tick(ts){ raf = 0; if (!visible) return; const d = Math.min(64, ts - (last || ts)); last = ts; t += d * 0.003; if (t > 50) t = 0; draw(); raf = requestAnimationFrame(tick); }
+  figs.push(draw);
+  if (!reduced && 'IntersectionObserver' in window) new IntersectionObserver(es => { visible = es[0].isIntersecting; last = 0; if (visible && !raf) raf = requestAnimationFrame(tick); }).observe(cv);
+})();
+
+/* ---------- 1: prime count ---------- */
+(function(){
+  const cv = $('#c1'), tip = $('#t1'); let N = 10000, hx = null, f;
+  const Li = x => x <= 2 ? 0 : RH.li(x) - RH.LI2;
+  function draw(){
+    const ymax = Li(N) * 1.08;
+    f = frame(cv, 250, { x0: 0, x1: N, y0: 0, y1: ymax, xticks: tk(nice(0, N, 4)), yticks: tk(nice(0, ymax, 4)), ml: 40 });
+    const g = f.g, S = 180, xs = i => 2 + (N - 2) * i / (S - 1); clip(f);
+    curve(g, S, i => f.X(xs(i)), i => f.Y(xs(i) / Math.log(xs(i))), COL.muted, 1.5, [4, 4]);
+    curve(g, S, i => f.X(xs(i)), i => f.Y(Li(xs(i))), COL.law, 2);
+    g.beginPath();
+    if (N <= 1000) { g.moveTo(f.X(0), f.Y(0)); for (let n = 2; n <= N; n++) if (T.pi[n] !== T.pi[n - 1]) { g.lineTo(f.X(n), f.Y(T.pi[n - 1])); g.lineTo(f.X(n), f.Y(T.pi[n])); } g.lineTo(f.X(N), f.Y(T.pi[N])); }
+    else for (let p = 0; p <= f.pw; p++) { const x = Math.min(N, Math.round(N * p / f.pw)), y = f.Y(T.pi[x]); p ? g.lineTo(f.ml + p, y) : g.moveTo(f.ml + p, y); }
+    stroke(g, COL.prime, 2); g.restore();
+    if (hx != null) { const x = Math.max(2, Math.min(N, Math.round(f.Xi(hx)))), X = f.X(x);
+      g.strokeStyle = COL.muted; g.lineWidth = 1; g.beginPath(); g.moveTo(X, f.mt); g.lineTo(X, f.mt + f.ph); g.stroke();
+      dot(g, X, f.Y(Li(x)), 3.5, COL.law); dot(g, X, f.Y(T.pi[x]), 4, COL.prime);
+      tipShow(tip, X, f.mt + 14, 'x = ' + fmt(x), [{ c: COL.prime, v: fmt(T.pi[x]), l: 'primes' }, { c: COL.law, v: fmt(+Li(x).toFixed(1)), l: 'Li(x)' }, { c: COL.muted, v: fmt(+(x / Math.log(x)).toFixed(1)), l: 'x / ln x' }]); }
+  }
+  hover(cv, x => { hx = x; draw(); }, () => { hx = null; tip.hidden = true; draw(); });
+  pressGroup([...$('#b1').children], b => { N = +b.dataset.n; hx = null; tip.hidden = true; draw(); });
+  figs.push(draw);
+})();
+
+/* ---------- 2: Euler product grid ---------- */
+(function(){
+  const grid = $('#g2'), sl = $('#e2'), out = $('#o2'), read = $('#r2');
+  const PR = T.primes.filter(p => p < 100), lpf = new Uint8Array(101); lpf[1] = 1;
+  for (const p of PR) for (let n = p; n <= 100; n += p) lpf[n] = p;
+  const cells = []; for (let n = 1; n <= 100; n++) { const d = el('div', null, String(n)); grid.appendChild(d); cells.push(d); }
+  function upd(){
+    const i = +sl.value, P = i ? PR[i - 1] : 1; let prod = 1, lit = 0;
+    for (let k = 0; k < i; k++) prod /= 1 - 1 / (PR[k] * PR[k]);
+    cells.forEach((d, j) => { const n = j + 1, on = lpf[n] <= P; if (on) lit++; d.className = on ? (i && lpf[n] === P ? 'on new' : 'on') : ''; });
+    out.textContent = i ? '≤ ' + P : 'none';
+    setRead(read, [{ t: 'Product = ' + prod.toFixed(6), b: 1 }, { t: '   target ζ(2) = π²/6 = 1.644934', dim: 1 }, { t: '   lit: ' + lit + ' of 100', dim: 1 }]);
+  }
+  sl.addEventListener('input', upd); upd();
+})();
+
+/* ---------- 3: zeta trace + strip map ---------- */
+(function(){
+  const cv = $('#c3'), cm = $('#c3b'), read = $('#r3'), sg = $('#sg'), tt = $('#tt'), osg = $('#osg'), ott = $('#ott'), pb = $('#p3'), hb = $('#h3');
+  let sig = 0.5, t = 34, P = zpath(sig), playing = false, last = 0, minIdx = null;
+  const H = () => Math.round(Math.min(360, Math.max(250, cv.clientWidth * 0.86)));
+  function closest(i1){ let m = 1e9, at = 0; for (let i = Math.round(2 / DT); i <= i1; i++) { const h = Math.hypot(P.re[i], P.im[i]); if (h < m) { m = h; at = i; } } return [m, at * DT]; }
+  function buildMap(){
+    const cols = 200, rows = 30, off = document.createElement('canvas'); off.width = cols; off.height = rows;
+    const g = off.getContext('2d'), img = g.createImageData(cols, rows), c0 = hex(COL.heat0), c1 = hex(COL.heat1), o = [0, 0];
+    for (let r = 0; r < rows; r++) { const s = 1 - (r + .5) / rows; for (let c = 0; c < cols; c++) { RH.zeta(s, (c + .5) / cols * TM, o);
+      let q = 1 - (Math.log(Math.hypot(o[0], o[1])) + 3.6) / 2.8; q = q < 0 ? 0 : q > 1 ? 1 : q; q = Math.pow(q, 1.5);
+      const k = 4 * (r * cols + c); img.data[k] = c0[0] + (c1[0] - c0[0]) * q; img.data[k + 1] = c0[1] + (c1[1] - c0[1]) * q; img.data[k + 2] = c0[2] + (c1[2] - c0[2]) * q; img.data[k + 3] = 255; } }
+    g.putImageData(img, 0, 0); return off;
+  }
+  function drawMap(){
+    const f = frame(cm, 104, { x0: 0, x1: TM, y0: 0, y1: 1, ml: 30, mr: 10, mt: 6, mb: 22, xticks: tk(nice(0, TM, 6), v => v ? String(v) : 't = 0'), yticks: [] });
+    const g = f.g; if (!mapCache) mapCache = buildMap();
+    g.imageSmoothingEnabled = true; g.drawImage(mapCache, f.ml, f.mt, f.pw, f.ph);
+    g.fillStyle = COL.muted; g.textAlign = 'right'; g.textBaseline = 'middle'; [[0, '0'], [0.5, '½'], [1, '1']].forEach(([v, l]) => g.fillText(l, f.ml - 6, Math.min(f.mt + f.ph - 5, Math.max(f.mt + 5, f.Y(v)))));
+    g.textAlign = 'left'; g.textBaseline = 'top'; g.fillText('σ', 4, f.mt - 2);
+    const y = Math.round(f.Y(sig)) + .5, x = f.X(t);
+    g.strokeStyle = COL.ink; g.globalAlpha = .7; g.lineWidth = 1; g.beginPath(); g.moveTo(f.ml, y); g.lineTo(f.ml + f.pw, y); g.stroke(); g.globalAlpha = 1;
+    dot(g, x, y, 4.5, COL.zero);
+  }
+  function draw(){
+    const i = Math.round(t / DT);
+    drawTrace(cv, H(), P, i, { inset: true, tail: 3 }); drawMap();
+    const re = P.re[i], im = P.im[i], parts = [{ t: 'ζ = ' + minus(re.toFixed(2)) + (im < 0 ? ' − ' : ' + ') + Math.abs(im).toFixed(2) + 'i', b: 1 }, { t: '   |ζ| = ' + Math.hypot(re, im).toFixed(3), dim: 1 }];
+    if (sig === 0.5) { const z = ZEROS.filter(v => v <= t); parts.push({ t: '   zeros passed: ' + (z.length ? z.slice(-4).map(v => v.toFixed(2)).join(', ') + (z.length > 4 ? ' (' + z.length + ' so far)' : '') : 'none yet'), dim: 1 }); }
+    else if (t > 2) { const [m, at] = closest(i); parts.push({ t: '   closest approach to 0 so far: ' + m.toFixed(3) + ' at t ≈ ' + at.toFixed(1), dim: 1 }); }
+    setRead(read, parts);
+    osg.textContent = sig.toFixed(2); ott.textContent = t.toFixed(1);
+  }
+  function tick(ts){ if (!playing) return; const d = Math.min(64, ts - (last || ts)); last = ts; t = Math.min(TM, t + d * 0.0028); tt.value = t; if (t >= TM) stop(); draw(); if (playing) requestAnimationFrame(tick); }
+  function stop(){ playing = false; pb.textContent = t >= TM ? 'Replay' : 'Play'; }
+  pb.addEventListener('click', () => { if (playing) return stop(); if (t >= TM - 0.01) t = 0; playing = true; last = 0; pb.textContent = 'Pause'; requestAnimationFrame(tick); });
+  sg.addEventListener('input', () => { sig = Math.abs(+sg.value - 0.5) < 0.006 ? 0.5 : +sg.value; P = zpath(sig); draw(); });
+  tt.addEventListener('input', () => { t = +tt.value; if (playing) stop(); pb.textContent = 'Play'; draw(); });
+  hb.addEventListener('click', () => { sig = 0.5; sg.value = 0.5; P = zpath(sig); draw(); });
+  figs.push(draw);
+})();
+
+/* ---------- 4: explicit formula ---------- */
+(function(){
+  const cv = $('#c4'), cb = $('#c4b'), tip = $('#t4'), ks = $('#k4'), ok = $('#ok4'), pb = $('#p4');
+  let K = 30, XM = 60, hx = null, playing = false, last = 0, kf = 30, f;
+  const wave = (g, u, r) => 2 * r * (0.5 * Math.cos(g * u) + g * Math.sin(g * u)) / (0.25 + g * g);
+  function approx(x, k){ const u = Math.log(x), r = Math.sqrt(x); let s = x - Math.log(2 * Math.PI) - 0.5 * Math.log(1 - 1 / (x * x)); for (let j = 0; j < k; j++) s -= wave(ZEROS[j], u, r); return s; }
+  function draw(){
+    f = frame(cv, 270, { x0: 0, x1: XM, y0: 0, y1: XM, xticks: tk(nice(0, XM, 6)), yticks: tk(nice(0, XM, 4)), ml: 30 });
+    const g = f.g; clip(f);
+    g.beginPath(); g.moveTo(f.X(0), f.Y(0)); for (let n = 2; n <= XM; n++) if (T.psi[n] !== T.psi[n - 1]) { g.lineTo(f.X(n), f.Y(T.psi[n - 1])); g.lineTo(f.X(n), f.Y(T.psi[n])); } g.lineTo(f.X(XM), f.Y(T.psi[XM])); stroke(g, COL.prime, 2);
+    const S = Math.round(f.pw * 2.5), xs = i => 1.2 + (XM - 1.2) * i / (S - 1);
+    curve(g, S, i => f.X(xs(i)), i => f.Y(approx(xs(i), K)), COL.zero, 1.8); g.restore();
+    if (hx != null) { const x = Math.max(1.2, Math.min(XM, f.Xi(hx))), X = f.X(x), a = approx(x, K), p = T.psi[Math.floor(x)];
+      g.strokeStyle = COL.muted; g.lineWidth = 1; g.beginPath(); g.moveTo(X, f.mt); g.lineTo(X, f.mt + f.ph); g.stroke();
+      dot(g, X, f.Y(a), 3.5, COL.zero); dot(g, X, f.Y(p), 4, COL.prime);
+      tipShow(tip, X, f.mt + 14, 'x = ' + x.toFixed(1), [{ c: COL.prime, v: p.toFixed(2), l: 'ψ(x)' }, { c: COL.zero, v: a.toFixed(2), l: 'from ' + K + ' zeros' }]); }
+    ok.textContent = K;
+  }
+  function drawNotes(){
+    const rowH = 58, f2 = frame(cb, rowH * 3 + 26, { x0: 0, x1: XM, y0: 0, y1: 1, xticks: tk(nice(0, XM, 6)), yticks: [], ml: 30, mt: 2 });
+    const g = f2.g, amp = 2.3 * Math.sqrt(XM) / ZEROS[0], S = Math.round(f2.pw * 2);
+    for (let k = 0; k < 3; k++) { const y0 = 2 + k * rowH + rowH / 2, sc = (rowH / 2 - 5) / amp, xs = i => 1.2 + (XM - 1.2) * i / (S - 1);
+      g.strokeStyle = COL.grid; g.lineWidth = 1; g.beginPath(); g.moveTo(f2.ml, Math.round(y0) + .5); g.lineTo(f2.W - f2.mr, Math.round(y0) + .5); g.stroke();
+      curve(g, S, i => f2.X(xs(i)), i => y0 + wave(ZEROS[k], Math.log(xs(i)), Math.sqrt(xs(i))) * sc, COL.zero, 1.6);
+      g.fillStyle = COL.surface; g.fillRect(f2.ml + 2, y0 - rowH / 2 + 2, 78, 14);
+      g.fillStyle = COL.ink; g.textAlign = 'left'; g.textBaseline = 'top'; g.fillText('γ' + ['₁', '₂', '₃'][k] + ' ≈ ' + ZEROS[k].toFixed(2), f2.ml + 4, y0 - rowH / 2 + 3); }
+  }
+  function all(){ draw(); drawNotes(); }
+  function tick(ts){ if (!playing) return; const d = Math.min(64, ts - (last || ts)); last = ts; kf = Math.min(300, kf + d * (0.012 + kf * 0.0005)); K = Math.round(kf); ks.value = K; if (kf >= 300) { playing = false; pb.textContent = 'Play from 0'; } draw(); if (playing) requestAnimationFrame(tick); }
+  pb.addEventListener('click', () => { if (playing) { playing = false; pb.textContent = 'Play from 0'; return; } kf = 0; K = 0; playing = true; last = 0; pb.textContent = 'Pause'; requestAnimationFrame(tick); });
+  ks.addEventListener('input', () => { K = +ks.value; kf = K; if (playing) { playing = false; pb.textContent = 'Play from 0'; } draw(); });
+  hover(cv, x => { hx = x; draw(); }, () => { hx = null; tip.hidden = true; draw(); });
+  pressGroup([...pb.parentNode.querySelectorAll('[data-x]')], b => { XM = +b.dataset.x; hx = null; tip.hidden = true; all(); });
+  figs.push(all);
+})();
+
+/* ---------- 5: normalised error and a rogue zero ---------- */
+(function(){
+  const cv = $('#c5'), tip = $('#t5'), sl = $('#b5'), ob = $('#ob5'), read = $('#r5');
+  const A = Math.log(100), B = Math.log(1e6), G = ZEROS[0]; let beta = 0.5, bins = null, hx = null, f;
+  function build(cols){ const lo = new Float32Array(cols), hi = new Float32Array(cols); let n = 100;
+    for (let c = 0; c < cols; c++) { const end = c === cols - 1 ? 1e6 : Math.exp(A + (c + 1) / cols * (B - A)); let mn = 9, mx = -9;
+      do { const r = Math.sqrt(n), h = (T.psi[n] - n) / r, l = (T.psi[n] - n - 1) / r; if (h > mx) mx = h; if (l < mn) mn = l; n++; } while (n < end);
+      lo[c] = mn; hi[c] = mx; }
+    return { cols, lo, hi }; }
+  const pair = (b, u) => -2 * Math.exp((b - 0.5) * u) * (b * Math.cos(G * u) + G * Math.sin(G * u)) / (b * b + G * G);
+  function draw(){
+    const W = cv.clientWidth || 320, cols = Math.max(60, Math.round(W - 46));
+    if (!bins || bins.cols !== cols) bins = build(cols);
+    const dl = new Float32Array(cols); let ext = 1.15, mxw = 0;
+    if (beta > 0.5) for (let c = 0; c < cols; c++) { const u = A + (c + .5) / cols * (B - A); dl[c] = pair(beta, u) - pair(0.5, u); mxw = Math.max(mxw, Math.abs(bins.hi[c] + dl[c]), Math.abs(bins.lo[c] + dl[c])); ext = Math.max(ext, mxw * 1.08); }
+    const yt = nice(-ext, ext, 4);
+    f = frame(cv, 250, { x0: 100, x1: 1e6, xlog: true, y0: -ext, y1: ext, ml: 36, mr: 10, xticks: [2, 3, 4, 5, 6].map(e => ({ v: Math.pow(10, e), l: '10' + sup(e) })), yticks: tk(yt, v => minus(v)) });
+    const g = f.g, cw = f.pw / cols; clip(f);
+    g.strokeStyle = COL.rule; g.lineWidth = 1; g.beginPath(); g.moveTo(f.ml, Math.round(f.Y(0)) + .5); g.lineTo(f.ml + f.pw, Math.round(f.Y(0)) + .5); g.stroke();
+    const band = (off, color) => { g.fillStyle = color; for (let c = 0; c < cols; c++) { const y1 = f.Y(bins.hi[c] + (off ? dl[c] : 0)), y2 = f.Y(bins.lo[c] + (off ? dl[c] : 0)); g.fillRect(f.ml + c * cw, y1 - .6, cw + .5, Math.max(1.6, y2 - y1 + 1.2)); } };
+    if (beta > 0.5) band(true, COL.whatif);
+    band(false, COL.prime); g.restore();
+    ob.textContent = beta.toFixed(3);
+    setRead(read, beta > 0.5 ? [{ t: 'What-if error reaches ' + mxw.toFixed(1) + ' × √x', b: 1 }, { t: 'and its envelope keeps growing like x^(β − ½)', dim: 1 }] : [{ t: 'Largest actual error: 0.80 × √x', b: 1 }, { t: '(near x = 1,422)', dim: 1 }]);
+    if (hx != null) { const c = Math.max(0, Math.min(cols - 1, Math.floor((hx - f.ml) / cw))), X = f.ml + (c + .5) * cw, x = Math.exp(A + (c + .5) / cols * (B - A));
+      g.strokeStyle = COL.muted; g.lineWidth = 1; g.beginPath(); g.moveTo(X, f.mt); g.lineTo(X, f.mt + f.ph); g.stroke();
+      const rows = [{ c: COL.prime, v: minus(bins.lo[c].toFixed(2)) + ' to ' + minus(bins.hi[c].toFixed(2)), l: 'actual' }]; if (beta > 0.5) rows.push({ c: COL.whatif, v: minus(((bins.lo[c] + bins.hi[c]) / 2 + dl[c]).toFixed(2)), l: 'what-if' });
+      tipShow(tip, X, f.mt + 14, 'x ≈ ' + fmt(Math.round(x)), rows); }
+  }
+  sl.addEventListener('input', () => { beta = +sl.value; draw(); });
+  hover(cv, x => { hx = x; draw(); }, () => { hx = null; tip.hidden = true; draw(); });
+  figs.push(draw);
+})();
+
+/* ---------- 6: gaps between zeros ---------- */
+(function(){
+  const cv = $('#c6'), tip = $('#t6'), BW = 0.2, NB = 16, cnt = new Array(NB).fill(0);
+  const w = ZEROS.map(g => g / (2 * Math.PI) * (Math.log(g / (2 * Math.PI)) - 1) + 7 / 8); let tot = 0;
+  for (let i = 1; i < w.length; i++) { const b = Math.floor((w[i] - w[i - 1]) / BW); if (b < NB) cnt[b]++; tot++; }
+  let hb = -1, f;
+  function draw(){
+    f = frame(cv, 244, { x0: 0, x1: NB * BW, y0: 0, y1: 1.1, ml: 34, mb: 40, xtitle: 'gap ÷ average gap', xticks: tk(nice(0, 3, 6)), yticks: tk([0, 0.25, 0.5, 0.75, 1]) });
+    const g = f.g, bw = Math.min(24, f.X(BW) - f.X(0) - 2);
+    for (let b = 0; b < NB; b++) { const d = cnt[b] / (tot * BW), x = f.X((b + .5) * BW) - bw / 2, y = f.Y(d), h = f.Y(0) - y; if (h < .5) continue;
+      g.fillStyle = COL.zero; g.globalAlpha = hb === -1 || hb === b ? 1 : .55; g.beginPath(); const r = Math.min(4, h); g.moveTo(x, y + h); g.lineTo(x, y + r); g.quadraticCurveTo(x, y, x + r, y); g.lineTo(x + bw - r, y); g.quadraticCurveTo(x + bw, y, x + bw, y + r); g.lineTo(x + bw, y + h); g.fill(); g.globalAlpha = 1; }
+    const S = 120, xs = i => NB * BW * i / (S - 1);
+    curve(g, S, i => f.X(xs(i)), i => f.Y(Math.exp(-xs(i))), COL.muted, 1.5, [4, 4]);
+    curve(g, S, i => f.X(xs(i)), i => f.Y(32 / (Math.PI * Math.PI) * xs(i) * xs(i) * Math.exp(-4 * xs(i) * xs(i) / Math.PI)), COL.ink, 2);
+    if (hb >= 0) tipShow(tip, f.X((hb + .5) * BW), f.Y(cnt[hb] / (tot * BW)), 'gap ' + (hb * BW).toFixed(1) + ' to ' + ((hb + 1) * BW).toFixed(1), [{ c: COL.zero, v: String(cnt[hb]), l: 'of ' + tot + ' gaps' }]);
+  }
+  hover(cv, x => { const b = Math.floor(f.Xi(x) / BW); hb = b >= 0 && b < NB ? b : -1; if (hb < 0) tip.hidden = true; draw(); }, () => { hb = -1; tip.hidden = true; draw(); });
+  figs.push(draw);
+})();
+
+/* ---------- 7 and 8: elliptic curves over F_p ---------- */
+(function(){
+  const cv = $('#c7'), cc = $('#c7b'), c8 = $('#c8'), t8 = $('#t8'), read = $('#r7'), sa = $('#a7'), sb = $('#bb7'), sp = $('#p7');
+  const PL = T.primes.filter(p => p >= 5 && p < 100), P8 = T.primes.filter(p => p >= 5 && p < 1000);
+  let a = -1, b = 1, p = 37, pts8 = [], h8 = -1, f8;
+  function drawGrid(E){
+    const W = cv.clientWidth || 300, S = Math.min(W, 330), { g } = prep(cv, S), m = 16, side = S - 2 * m, cell = side / p, x0 = (W - side) / 2;
+    g.strokeStyle = COL.rule; g.lineWidth = 1; g.strokeRect(Math.round(x0) + .5, m + .5, side, side);
+    if (p <= 37) { g.strokeStyle = COL.grid; g.beginPath(); for (let i = 1; i < p; i++) { const q = Math.round(i * cell) + .5; g.moveTo(x0 + q, m); g.lineTo(x0 + q, m + side); g.moveTo(x0, m + q); g.lineTo(x0 + side, m + q); } g.stroke(); }
+    const r = Math.max(1.2, Math.min(5, cell * 0.34)); g.fillStyle = COL.prime;
+    for (let i = 0; i < E.pts.length; i += 2) { g.beginPath(); g.arc(x0 + (E.pts[i] + .5) * cell, m + side - (E.pts[i + 1] + .5) * cell, r, 0, 7); g.fill(); }
+    g.fillStyle = COL.muted; g.textAlign = 'center'; g.textBaseline = 'top'; g.fillText('x = 0 … ' + (p - 1), W / 2, m + side + 3);
+    g.save(); g.translate(x0 - 4, m + side / 2); g.rotate(-Math.PI / 2); g.textBaseline = 'bottom'; g.fillText('y = 0 … ' + (p - 1), 0, 0); g.restore();
+  }
+  function drawCircle(E){
+    const W = cc.clientWidth || 300, H = Math.min(W, 330) > 260 ? 250 : 220, { g } = prep(cc, H), R = Math.min(W, H) / 2 - 30, cx = W / 2, cy = H / 2, sq = Math.sqrt(p);
+    g.strokeStyle = COL.rule; g.lineWidth = 1; g.beginPath(); g.moveTo(8, cy + .5); g.lineTo(W - 8, cy + .5); g.moveTo(cx + .5, 8); g.lineTo(cx + .5, H - 8); g.stroke();
+    g.beginPath(); g.arc(cx, cy, R, 0, 7); stroke(g, COL.law, 2);
+    g.fillStyle = COL.muted; g.textAlign = 'left'; g.textBaseline = 'top'; g.fillText('√p ≈ ' + sq.toFixed(2), cx + R + 4 > W - 60 ? cx + 6 : cx + R * 0.72 + 6, cy + R * 0.72 + 2);
+    if (E.singular) return;
+    const re = E.ap / 2, im = Math.sqrt(Math.max(0, p - re * re)), ax = cx + re / sq * R, ay = im / sq * R;
+    g.strokeStyle = COL.muted; g.setLineDash([3, 3]); g.beginPath(); g.moveTo(ax, cy - ay); g.lineTo(ax, cy + ay); g.stroke(); g.setLineDash([]);
+    dot(g, ax, cy - ay, 5, COL.zero); dot(g, ax, cy + ay, 5, COL.zero);
+    g.fillStyle = COL.ink; g.textBaseline = 'middle'; const left = re > 0; g.textAlign = left ? 'right' : 'left';
+    g.fillText('α', ax + (left ? -10 : 10), cy - ay - 2); g.fillText('ᾱ', ax + (left ? -10 : 10), cy + ay + 2);
+    g.fillStyle = COL.muted; g.textBaseline = 'top'; g.textAlign = re >= 0 ? 'left' : 'right'; if (ay > 16) g.fillText('aₚ/2 = ' + minus(re), ax + (re >= 0 ? 6 : -6), cy + 5);
+  }
+  function scatter(){
+    f8 = frame(c8, 214, { x0: 0, x1: 1000, y0: -1.25, y1: 1.25, ml: 32, mb: 40, xtitle: 'prime p', xticks: tk(nice(0, 1000, 5)), yticks: tk([-1, 0, 1], minus) });
+    const g = f8.g;
+    [-1, 1].forEach(v => { g.strokeStyle = COL.law; g.lineWidth = 2; g.beginPath(); g.moveTo(f8.ml, f8.Y(v)); g.lineTo(f8.ml + f8.pw, f8.Y(v)); g.stroke(); });
+    pts8.forEach((q, i) => { g.beginPath(); g.arc(f8.X(q.p), f8.Y(q.v), i === h8 ? 5 : 2.6, 0, 7); g.fillStyle = COL.zero; g.globalAlpha = h8 < 0 || i === h8 ? 1 : .5; g.fill(); g.globalAlpha = 1; });
+    if (h8 >= 0) { const q = pts8[h8]; tipShow(t8, f8.X(q.p), f8.Y(q.v), 'p = ' + q.p, [{ c: COL.prime, v: String(q.N), l: 'points' }, { c: COL.zero, v: minus(q.ap), l: 'aₚ, bound ' + (2 * Math.sqrt(q.p)).toFixed(1) }]); }
+  }
+  function upd(full){
+    const E = RH.ecCount(a, b, p, true);
+    drawGrid(E); drawCircle(E);
+    $('#oa7').textContent = minus(a); $('#obb7').textContent = minus(b); $('#op7').textContent = p;
+    if (E.singular) setRead(read, [{ t: 'This curve is singular modulo ' + p + '.', b: 1 }, { t: ' Change a, b or p to get a smooth curve.', dim: 1 }]);
+    else { const re = E.ap / 2, im = Math.sqrt(p - re * re);
+      setRead(read, [{ t: 'N = ' + E.N, b: 1 }, { t: '   p + 1 = ' + (p + 1), dim: 1 }, { t: '   aₚ = ' + minus(E.ap), b: 1 }, { t: '   bound 2√p = ' + (2 * Math.sqrt(p)).toFixed(2), dim: 1 }, { t: '   α = ' + minus(re) + ' ± ' + im.toFixed(2) + 'i', dim: 1 }]); }
+    if (full) { pts8 = []; for (const q of P8) { const r = RH.ecCount(a, b, q, false); if (!r.singular) pts8.push({ p: q, N: r.N, ap: r.ap, v: r.ap / (2 * Math.sqrt(q)) }); } h8 = -1; t8.hidden = true; }
+    scatter();
+  }
+  sa.addEventListener('input', () => { a = +sa.value; upd(true); });
+  sb.addEventListener('input', () => { b = +sb.value; upd(true); });
+  sp.addEventListener('input', () => { p = PL[+sp.value]; upd(false); });
+  hover(c8, (x, y) => { let best = -1, bd = 900; pts8.forEach((q, i) => { const dx = f8.X(q.p) - x, dy = f8.Y(q.v) - y, d = dx * dx + dy * dy; if (d < bd) { bd = d; best = i; } }); h8 = best; if (best < 0) t8.hidden = true; scatter(); }, () => { h8 = -1; t8.hidden = true; scatter(); });
+  figs.push(() => upd(true));
+})();
+
+/* ---------- 9: multiplicity ---------- */
+(function(){
+  const cv = $('#c9'), sl = $('#m9'), om = $('#om9'), bd = $('#bd9'), read = $('#r9');
+  const T5 = x => 16 * x ** 5 - 20 * x ** 3 + 5 * x, roots = [1, 3, 5, 7, 9].map(k => Math.cos(k * Math.PI / 10));
+  function draw(){
+    const m = +sl.value, f = frame(cv, 170, { x0: -1.02, x1: 1.02, y0: m % 2 ? -1.15 : -0.22, y1: 1.15, ml: 10, mr: 10, mb: 8, nobase: true, xticks: [], yticks: [] }), g = f.g;
+    g.strokeStyle = COL.rule; g.lineWidth = 1; g.beginPath(); g.moveTo(f.ml, Math.round(f.Y(0)) + .5); g.lineTo(f.ml + f.pw, Math.round(f.Y(0)) + .5); g.stroke();
+    const S = Math.round(f.pw * 2), xs = i => -1 + 2 * i / (S - 1);
+    curve(g, S, i => f.X(xs(i)), i => f.Y(Math.pow(T5(xs(i)), m)), COL['ink-2'], 2);
+    roots.forEach(r => dot(g, f.X(r), f.Y(0), 4.5, COL.prime));
+    om.textContent = m; bd.replaceChildren();
+    for (let r = 0; r < 5; r++) { const s = el('span'); for (let k = 0; k < m; k++) s.appendChild(el('i')); bd.appendChild(s); }
+    setRead(read, [{ t: '5 roots × order ' + m + ' = degree ' + 5 * m, b: 1 }, { t: '   so a polynomial of degree D with order-' + m + ' zeros has at most D/' + m + ' of them', dim: 1 }]);
+  }
+  sl.addEventListener('input', draw); figs.push(draw);
+})();
+
+/* ---------- 10: the central binomial coefficient ---------- */
+(function(){
+  const cv = $('#c10'), tip = $('#t10'), sl = $('#n10'), on = $('#on10'), read = $('#r10'); let segs = [], hs = -1, f;
+  function draw(){
+    const n = +sl.value, cap = 2 * n * Math.LN2; let tot = 0, big = 0; segs = [];
+    for (const p of T.primes) { if (p > 2 * n) break; const v = RH.vBinom(n, p); if (v) { const w = v * Math.log(p); segs.push({ p, v, w, big: p > n }); tot += w; if (p > n) big += w; } }
+    f = frame(cv, 96, { x0: 0, x1: cap, y0: 0, y1: 1, ml: 4, mr: 4, mt: 22, mb: 30, xticks: [], yticks: [] });
+    const g = f.g, y = f.mt, h = f.ph; let x = 0;
+    g.strokeStyle = COL.muted; g.lineWidth = 1; g.strokeRect(f.ml + .5, y + .5, f.pw - 1, h - 1);
+    segs.forEach((s, i) => { const X0 = f.X(x), X1 = f.X(x + s.w), wpx = Math.max(1, X1 - X0 - 2); s.x0 = X0; s.x1 = X1;
+      g.fillStyle = s.big ? COL.prime : COL.muted; g.globalAlpha = hs < 0 || hs === i ? 1 : .55; g.fillRect(X0 + 1, y + 2, wpx, h - 4); g.globalAlpha = 1;
+      const txt = s.p + (s.v > 1 ? sup(s.v) : ''); if (g.measureText(txt).width + 8 < wpx) { g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(txt, X0 + 1 + wpx / 2, y + h / 2 + .5); }
+      x += s.w; });
+    g.fillStyle = COL.ink; g.textBaseline = 'bottom'; g.textAlign = 'left'; g.fillText('ln C(2n, n) = ' + tot.toFixed(2), f.ml, y - 6);
+    g.fillStyle = COL.muted; g.textAlign = 'right'; g.textBaseline = 'top'; g.fillText('ceiling 2n · ln 2 = ' + cap.toFixed(2), f.ml + f.pw, y + h + 6);
+    let c = 1n; for (let i = 1; i <= n; i++) c = c * BigInt(n + i) / BigInt(i);
+    const cs = c.toString(), shown = cs.length <= 15 ? Number(c).toLocaleString('en-US') : cs[0] + '.' + cs.slice(1, 3) + ' × 10' + sup(cs.length - 1);
+    on.textContent = n;
+    setRead(read, [{ t: 'C(' + 2 * n + ', ' + n + ') = ' + shown, b: 1 }, { t: '   primes between n and 2n contribute ' + big.toFixed(2) + ' of ' + tot.toFixed(2), dim: 1 }]);
+    if (hs >= 0 && segs[hs]) { const s = segs[hs]; tipShow(tip, (s.x0 + s.x1) / 2, y + 4, 'prime ' + s.p, [{ c: s.big ? COL.prime : COL.muted, v: s.w.toFixed(2), l: s.v > 1 ? 'divides ' + s.v + ' times' : 'divides once' }]); }
+  }
+  sl.addEventListener('input', () => { hs = -1; tip.hidden = true; draw(); });
+  hover(cv, x => { hs = segs.findIndex(s => x >= s.x0 && x < s.x1); if (hs < 0) tip.hidden = true; draw(); }, () => { hs = -1; tip.hidden = true; draw(); });
+  figs.push(draw);
+})();
+
+/* ---------- 12: balancing the chain length ---------- */
+(function(){
+  const cv = $('#c12'), sl = $('#m12'), om = $('#om12'), read = $('#r12'); let E = 6;
+  function draw(){
+    const x = Math.pow(10, E), r = Math.sqrt(x), m = Math.max(1, Math.round(Math.pow(x, +sl.value)));
+    const ex = []; for (let e = 0; e <= E; e += E / 2 >= 3 ? 2 : 1) ex.push(e);
+    const f = frame(cv, 254, { x0: 1, x1: x, xlog: true, y0: r / 3, y1: x * 2, ylog: true, ml: 36, mr: 12, mb: 40, xtitle: 'chain length m', xticks: ex.map(e => ({ v: Math.pow(10, e), l: e ? '10' + sup(e) : '1' })), yticks: ex.filter(e => Math.pow(10, e) >= r / 3).map(e => ({ v: Math.pow(10, e), l: '10' + sup(e) })) });
+    const g = f.g, S = 140, ms = i => Math.pow(x, i / (S - 1)); clip(f);
+    curve(g, S, i => f.X(ms(i)), () => f.Y(r), COL.law, 2);
+    curve(g, S, i => f.X(ms(i)), i => f.Y(x / ms(i)), COL.prime, 1.6, [5, 4]);
+    curve(g, S, i => f.X(ms(i)), i => f.Y(ms(i)), COL.zero, 1.6, [5, 4]);
+    curve(g, S, i => f.X(ms(i)), i => f.Y(x / ms(i) + ms(i) + r), COL.ink, 2.2);
+    g.restore();
+    const tot = x / m + m + r, X = f.X(m);
+    g.strokeStyle = COL.muted; g.lineWidth = 1; g.beginPath(); g.moveTo(X, f.mt); g.lineTo(X, f.mt + f.ph); g.stroke();
+    dot(g, X, f.Y(tot), 5, COL.ink);
+    g.fillStyle = COL.muted; g.textAlign = 'center'; g.textBaseline = 'bottom'; g.fillText('m = √x', f.X(r), f.Y(3 * r) - 9);
+    om.textContent = fmt(m);
+    setRead(read, [{ t: 'm = ' + fmt(m) + ': error ≈ ' + fmt(Math.round(tot)), b: 1 }, { t: '   = ' + (tot / r).toFixed(1) + ' × √x.   Best possible: 3 × √x = ' + fmt(Math.round(3 * r)) + ' at m = ' + fmt(Math.round(r)), dim: 1 }]);
+  }
+  sl.addEventListener('input', draw);
+  pressGroup([...$('#b12').children], b => { E = +b.dataset.e; draw(); });
+  figs.push(draw);
+})();
+
+/* ---------- boot ---------- */
+document.querySelectorAll('.toc a').forEach(a => a.addEventListener('click', e => { const t = document.getElementById(a.getAttribute('href').slice(1)); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }); } }));
+let rz = 0; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(redrawAll, 120); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', redrawAll);
+new MutationObserver(redrawAll).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+redrawAll();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(redrawAll);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+{
+ "file": "riemann-hypothesis-extended", "voice": "af_heart", "speed": 0.9,
+ "scenes": [
+  {"id": "hook", "label": "Primes", "s": [
+    ["Prime numbers are the atoms of arithmetic."],
+    ["Every whole number is built by multiplying primes together."],
+    ["Yet the primes themselves seem to turn up at random, with no pattern anyone can see."]]},
+  {"id": "stairs", "label": "Order from afar", "formulas": true, "s": [
+    ["Step back, though, and order appears."],
+    ["Count the primes as you go, and you get a staircase."],
+    ["From far away, that staircase hugs a smooth curve, one that Gauss guessed as a teenager."],
+    ["So here is the real question. How far does the staircase stray from the curve?"]]},
+  {"id": "coins", "label": "The square-root law", "formulas": true, "s": [
+    ["Think of flipping a fair coin a million times."],
+    ["Heads and tails will differ by something like a thousand, the square root of a million."],
+    ["That is the fingerprint of pure chance."],
+    ["The Riemann hypothesis says the primes are just as well behaved."],
+    ["Their error stays on the scale of the square root of x."]]},
+  {"id": "euler", "label": "Euler's sum and π", "s": [
+    ["The road to that claim begins with Leonhard Euler, more than a century before Riemann."],
+    ["He added up one, plus a quarter, plus a ninth, and so on: one over every square.", "He added up 1, plus 1/4, plus 1/9, and so on: one over every square."],
+    ["The total is pi squared over six.", "The total is π² over 6."],
+    ["Pi, the number of the circle, turns up in a sum over whole numbers.", "π, the number of the circle, turns up in a sum over whole numbers."]]},
+  {"id": "product", "label": "Euler's product", "s": [
+    ["Then Euler found the key."],
+    ["The same kind of sum can be rewritten as a product, with one factor for each prime."],
+    ["It works because every whole number is built from primes in exactly one way."],
+    ["All the whole numbers on one side. Only the primes on the other."],
+    ["This one identity ties the primes to a function. Its name is zeta."]]},
+  {"id": "spin", "label": "Complex numbers turn", "s": [
+    ["In eighteen fifty-nine, Bernhard Riemann fed that function complex numbers.", "In 1859, Bernhard Riemann fed that function complex numbers."],
+    ["A complex number is a point on a plane, and multiplying by i is a quarter turn."],
+    ["Euler's formula puts every rotation in one line: e to the i theta is the point on the unit circle at angle theta.", "Euler's formula puts every rotation in one line: e to the iθ is the point on the unit circle at angle θ."],
+    ["Half a turn is the angle pi, and it lands on minus one.", "Half a turn is the angle π, and it lands on −1."]]},
+  {"id": "arrows", "label": "A sum of arrows", "s": [
+    ["So with a complex input, every term of zeta becomes an arrow."],
+    ["The real part of the input sets its length. The imaginary part, t, sets its angle."],
+    ["Lay the arrows head to tail. The first few make big strides, and the rest spiral around a single point."],
+    ["That point is the value of zeta."],
+    ["As t rises, every arrow turns at its own speed, and the point wanders."]]},
+  {"id": "path", "label": "The zeros of zeta", "s": [
+    ["Follow that point as t climbs, and it traces a looping path."],
+    ["On this special line, where the real part is one half, the path keeps passing exactly through zero.", "On this special line, where the real part is ½, the path keeps passing exactly through zero."],
+    ["There, the arrows spiral around zero itself. Those moments are the zeros of zeta."]]},
+  {"id": "music", "label": "Zeros make the primes", "formulas": true, "s": [
+    ["And the zeros know everything about the primes."],
+    ["Each zero contributes one wave."],
+    ["Add the waves together, one after another, and the prime staircase emerges from smooth ripples."],
+    ["The zeros are the notes. The primes are the music."]]},
+  {"id": "line", "label": "Why the line matters", "formulas": true, "s": [
+    ["Where a zero sits decides how loud its wave is."],
+    ["On the special line, every wave grows at the same gentle, square root rate."],
+    ["A single zero off the line would make a wave that outgrows all the others, and the balance of the primes would be lost."],
+    ["Riemann's hypothesis is that this never happens. Every zero is on the line."],
+    ["For a hundred and sixty-seven years, nobody could prove it.", "For 167 years, nobody could prove it."]]},
+  {"id": "mirror", "label": "A parallel world", "s": [
+    ["There is a parallel world where the same statement was proved decades ago."],
+    ["There, whole numbers are replaced by polynomials."],
+    ["One proof uses a fact from school algebra: a polynomial cannot have more roots than its degree."],
+    ["So if every root is forced to count many times over, there cannot be many roots."],
+    ["That counting trick delivers the square root."]]},
+  {"id": "idea", "label": "The announced proof", "s": [
+    ["For whole numbers, the trick always broke down."],
+    ["To make a root count many times, you take derivatives. And a whole number has no derivative."],
+    ["The proof announced this month by Levent Alpurgay, working with the AI model Claude, is reported to find a substitute.", "The proof announced this month by Levent Alpöge, working with the AI model Claude, is reported to find a substitute."],
+    ["It builds a long chain of operations called theta lifts."],
+    ["Each link adds one more layer of divisibility by primes, doing the job that a derivative does for polynomials."]]},
+  {"id": "status", "label": "Where it stands", "s": [
+    ["Where does it stand today?"],
+    ["The proof is seventeen million lines of code in a language called Lean, and independent proof checkers have accepted it.", "The proof is 17 million lines of code in a language called Lean, and independent proof checkers have accepted it."],
+    ["But no person has yet read and understood the whole argument. That work has only just begun."],
+    ["So for now: checked by machine, not yet understood by people."]]},
+  {"id": "close", "label": "", "formulas": true, "s": [
+    ["If it holds up, one of the oldest questions about numbers finally has its answer."],
+    ["The primes are as orderly as randomness allows."]]}
+ ]
+}
