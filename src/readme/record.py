@@ -3,7 +3,7 @@
 
 Opens ../../index.html in headless Chromium, operates each figure's own controls (sliders, buttons)
 through a scripted sequence, photographs the figure card after every step, and joins the frames
-into media/figure-NN-<slug>-<light|dark>.gif with ffmpeg. Figure 6 has no controls and is saved as a PNG.
+into media/figure-NN-<slug>-<light|dark>.gif with ffmpeg.
 
 Usage:  python3 record.py                 every figure, both colour schemes
         python3 record.py 3 5             only figures 3 and 5 (0 = the trace at the top; 7 or 8 = the shared card)
@@ -39,6 +39,12 @@ class UI:
         self.pg.evaluate("([i,v])=>{const e=document.getElementById(i);e.value=v;e.dispatchEvent(new Event('input',{bubbles:true}))}", [ident, value])
     def click(self, selector):
         self.pg.evaluate("s=>document.querySelector(s).click()", selector)
+    def touch(self, ident, x, y):
+        """Put the pointer at (x, y) CSS px inside a canvas, the way a reader's finger or mouse would."""
+        r = self.pg.evaluate("i=>{const b=document.getElementById(i).getBoundingClientRect();return [b.x,b.y]}", ident)
+        self.pg.mouse.move(r[0] + x, r[1] + y)
+    def away(self):
+        self.pg.mouse.move(1, 1)
     def js(self, body, arg=None):
         return self.pg.evaluate(body, arg)
 
@@ -108,17 +114,37 @@ def seq_error(ui):
         ui.set('b5', b); yield 0.09
     yield ('hold', 0.6)
 
-def seq_static(ui):
-    yield 1.0
+def seq_gaps(ui):
+    # what Play does: add the zeros one at a time, faster as they accumulate; then draw new random points twice
+    n = 40
+    for k in range(n + 1):
+        ui.set('n6', round(20 * 30 ** (k / n))); yield 1.4 if k == 0 else 0.12
+    yield ('hold', 2.2)
+    for _ in range(2):
+        ui.click('#s6'); yield 1.3
 
 def seq_curve(ui):
-    ui.set('a7', -1); ui.set('bb7', 1)
-    for i in range(23):                           # p = 5 ... 97
-        ui.set('p7', i)
-        singular = ui.js("()=>document.getElementById('r7').textContent.includes('singular')")
-        yield 1.2 if i == 0 else 1.3 if singular else 0.32
-    yield ('hold', 1.2)
-    ui.set('p7', 9); yield 1.2                    # back to p = 37, then change the curve
+    P37 = 378                                     # the p slider is logarithmic; 378 is p = 37
+    ui.set('a7', -1); ui.set('bb7', 1); ui.set('p7', P37); yield 1.0
+    W = ui.js("()=>document.getElementById('c7').clientWidth")
+    side = min(W, 330) - 32; cell = side / 37; x0 = (W - side) / 2
+    for (x, y), s in (((0, 1), 1.9), ((2, 2), 1.5)):   # a square on the curve, then one off it
+        ui.touch('c7', x0 + (x + .5) * cell, 16 + side - (y + .5) * cell); yield s
+    ui.away()
+    ui.set('p7', 0); yield 0.8                    # p = 5, then press Play and let the page's own clock run
+    ui.click('#pl7'); yield 0.3
+    p_now = lambda: int(ui.js("()=>document.getElementById('op7').textContent"))
+    playing = lambda: ui.js("()=>document.getElementById('pl7').textContent") == 'Pause'
+    last, since = p_now(), 0.0
+    while playing():
+        ui.pg.clock.run_for(16); since += 0.016
+        p = p_now()
+        if p != last and (p < 100 or since >= 0.3):   # a frame for every prime below 100, then one every 0.3 s
+            last, since = p, 0.0; yield 0.016
+        else:
+            yield ('hold', 0.016)
+    yield 2.4                                     # the end: every prime below 1,000, all inside the band
+    ui.set('p7', P37); yield 1.2                  # back to p = 37, then change the curve
     for a in (0, 1, 2):
         ui.set('a7', a); yield 1.0
     for b in (2, 3):
@@ -158,15 +184,15 @@ def seq_balance(ui):
         ui.click('#b12 button:nth-child(%d)' % (e + 1)); yield 1.7
 
 
-FIGURES = [  # key, position of the card among the page's figure.fig elements, file stem, sequence, options
+FIGURES = [  # key, position of the card among the page's figure cards (the two video players not counted), file stem, sequence, options
     (0,  0,  'figure-00-zeta-trace',        seq_hero,         {'clock': True}),
     (1,  1,  'figure-01-prime-count',       seq_prime_count,  {}),
     (2,  2,  'figure-02-euler-product',     seq_euler,        {}),
     (3,  3,  'figure-03-zeta-walk',         seq_walk,         {'colors': 128}),
     (4,  4,  'figure-04-explicit-formula',  seq_explicit,     {}),
     (5,  5,  'figure-05-square-root-error', seq_error,        {}),
-    (6,  6,  'figure-06-zero-gaps',         seq_static,       {'static': True}),
-    (7,  7,  'figure-07-08-elliptic-curve', seq_curve,        {'width': 700}),
+    (6,  6,  'figure-06-zero-gaps',         seq_gaps,         {}),
+    (7,  7,  'figure-07-08-elliptic-curve', seq_curve,        {'width': 700, 'clock': True}),
     (9,  8,  'figure-09-multiplicity',      seq_multiplicity, {}),
     (10, 9,  'figure-10-binomial',          seq_binomial,     {}),
     (11, 10, 'figure-11-theta-chain',       seq_chain,        {}),
@@ -183,7 +209,7 @@ def open_page(browser, scheme, index, clock, width):
     if clock: pg.clock.pause_at(3600000)
     pg.add_style_tag(content=CSS % (CARD_X, CARD_Y, width))
     # setting the theme attribute makes the page redraw every figure at its recording size
-    pg.evaluate("([i,s])=>{document.querySelectorAll('figure.fig')[i].classList.add('rec');document.documentElement.dataset.theme=s}", [index, scheme])
+    pg.evaluate("([i,s])=>{[...document.querySelectorAll('figure.fig')].filter(f=>!f.closest('#watch'))[i].classList.add('rec');document.documentElement.dataset.theme=s}", [index, scheme])
     pg.wait_for_timeout(150)
     return ctx, pg, errors
 
@@ -221,19 +247,16 @@ def record(browser, scheme, fig):
     play(pg, seq, shoot); ctx.close()
     if errors or errors2: raise SystemExit('%s: page errors: %s' % (stem, errors + errors2))
     OUT.mkdir(exist_ok=True)
-    if opt.get('static'):
-        out = OUT / ('%s-%s.png' % (stem, scheme)); shutil.copy(frames[0][0], out)
-    else:
-        out = OUT / ('%s-%s.gif' % (stem, scheme))
-        lines = ['ffconcat version 1.0']
-        for f, s in frames:   # framerate 100 puts the timestamps on the GIF's own grid of 1/100 s
-            lines += ["file '%s'" % f.name, 'option framerate 100', 'duration %.2f' % s]
-        (tmp / 'list.txt').write_text('\n'.join(lines) + '\n')
-        vf = ('split[a][b];[a]palettegen=max_colors=%d:stats_mode=full:reserve_transparent=0[p];'
-              '[b][p]paletteuse=dither=none:diff_mode=rectangle' % opt.get('colors', 96))
-        subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', 'list.txt', '-vf', vf,
-                        '-fps_mode', 'vfr', '-final_delay', str(round(frames[-1][1] * 100)), '-loop', '0', str(out)],
-                       cwd=tmp, check=True)
+    out = OUT / ('%s-%s.gif' % (stem, scheme))
+    lines = ['ffconcat version 1.0']
+    for f, s in frames:   # framerate 100 puts the timestamps on the GIF's own grid of 1/100 s
+        lines += ["file '%s'" % f.name, 'option framerate 100', 'duration %.2f' % s]
+    (tmp / 'list.txt').write_text('\n'.join(lines) + '\n')
+    vf = ('split[a][b];[a]palettegen=max_colors=%d:stats_mode=full:reserve_transparent=0[p];'
+          '[b][p]paletteuse=dither=none:diff_mode=rectangle' % opt.get('colors', 96))
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', 'list.txt', '-vf', vf,
+                    '-fps_mode', 'vfr', '-final_delay', str(round(frames[-1][1] * 100)), '-loop', '0', str(out)],
+                   cwd=tmp, check=True)
     shutil.rmtree(tmp)
     print('%-44s %3d frames %5.1f s  %4dx%-4d %7.0f KB' % (out.name, len(frames), sum(s for _, s in frames),
           round(width * SCALE), round(height * SCALE), out.stat().st_size / 1024), flush=True)

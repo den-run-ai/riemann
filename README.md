@@ -181,12 +181,12 @@ Rescale the gaps between consecutive zeros so that the average gap is 1. They do
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="media/figure-06-zero-gaps-dark.png">
-    <img src="media/figure-06-zero-gaps-light.png" width="536" alt="Histogram of normalised gaps between zeta zeros with the random matrix prediction and the exponential law.">
+    <source media="(prefers-color-scheme: dark)" srcset="media/figure-06-zero-gaps-dark.gif">
+    <img src="media/figure-06-zero-gaps-light.gif" width="536" alt="Two rows of tick marks, a stretch of rescaled zeta zeros and independent random points, above a histogram of their gaps with the random matrix prediction and the exponential law. More zeros are added, and then new random points are drawn.">
   </picture>
 </p>
 
-**Figure 6. Gaps between the first 600 zeros.** Independent points would often sit almost on top of each other. Zeros almost never do.
+**Figure 6. Gaps between zeros, and between random points.** Above, the latest stretch of the zeros used, rescaled so that the average gap is 1, beside independent random points with the same average gap. A bar underneath marks two points closer than a quarter of the average gap. Random points do this all the time; zeros almost never do. Below, the gaps of all the zeros used, sorted by size. As the zeros are added one at a time, the bars settle onto the random-matrix curve, while the outlined bars of the random points follow the exponential law.
 
 This is the best evidence for an old idea of Hilbert and Pólya: the heights $\gamma$ are the eigenvalues of some self-adjoint operator. Such eigenvalues are real, which would be the hypothesis. Connes's trace-formula programme follows this route, and so does the Masullo manuscript. The announced proof takes a different road, and to see it we have to visit a parallel world.
 
@@ -213,7 +213,7 @@ Here $`P(T) = (1 - \alpha_1 T) \cdots (1 - \alpha_{2g} T)`$ is a polynomial of d
   </picture>
 </p>
 
-**Figure 7. An elliptic curve modulo $p$, and its two “zeros”.** **Figure 8** is the lower chart. Count the solutions, add one point at infinity to get $N$, and set $a_p = p + 1 - N$. The numbers $\alpha$ and $\bar\alpha$ with sum $a_p$ and product $p$ always land on the green circle. That is the Riemann hypothesis for this curve, and you can check it by counting.
+**Figure 7. An elliptic curve modulo $p$, and its two “zeros”.** **Figure 8** is the lower chart. Count the solutions, add one point at infinity to get $N$, and set $a_p = p + 1 - N$. The numbers $\alpha$ and $\bar\alpha$ with sum $a_p$ and product $p$ always land on the green circle. That is the Riemann hypothesis for this curve, and you can check it by counting. Touching a square of the grid tests the equation there. Play runs through every prime below 1,000: $\alpha$ travels round the circle while the lower chart fills in, one prime at a time, and never leaves its band.
 
 > **Worked example.** Take $y^2 = x^3 - x$ over $\mathbf F_5$. The solutions are (0, 0), (1, 0), (4, 0), (2, ±1), (3, ±2). With the point at infinity, $N = 8$, so $a_5 = 6 - 8 = -2$ and $\alpha = -1 \pm 2i$. Indeed $\lvert \alpha \rvert^2 = 5$.
 

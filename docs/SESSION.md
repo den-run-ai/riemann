@@ -4,7 +4,7 @@ One chat session with Claude (Anthropic), model Claude Fable 5.2, on Sunday 22 N
 
 The prompts are quoted as typed. The replies are reproduced in full; the source links that were attached to individual sentences in the chat are gathered in the list at the end.
 
-> **Added later.** Sections 1 to 3 and the three lists after them are the log of that session, kept as written. Where they say `explainer-src/` and `video-src/` they mean what is now `src/explainer/` and `src/video/`. [Section 4](#4-the-repository-the-readme-and-the-extended-video-1411-a-second-session), at the end, was added by a second session later the same day, which laid out this repository, turned the explainer into the README and made the extended video. `index.html` has since gained one block, the two video players under the title; nothing else in it was changed.
+> **Added later.** Sections 1 to 3 and the three lists after them are the log of that session, kept as written. Where they say `explainer-src/` and `video-src/` they mean what is now `src/explainer/` and `src/video/`. [Section 4](#4-the-repository-the-readme-and-the-extended-video-1411-a-second-session), at the end, was added by a second session later the same day, which laid out this repository, turned the explainer into the README and made the extended video. `index.html` has since gained the two video players under the title, and figures 6 to 8 have gained controls; nothing else in it was changed.
 
 ## 1. The explainer (06:39)
 
@@ -196,6 +196,18 @@ The work was pushed to the repository's main branch at the owner's request, and 
 2. **In the README**, the two video stills moved from the end to the top, with a play button and running time drawn on them. GitHub shows a player in a README only for a video uploaded through its own editor, and its file pages do not preview files of this size, so the stills link to the videos on the live page, where the browser plays them.
 
 Checked: both players at phone and desktop widths in both themes; playing, and one pausing the other, with clips cut from the real videos; the removal when the page is saved alone; the README's links and formulas again.
+
+### Afterwards: figures 6 and 7 become interactive
+
+> Could you please make interactive figures 6 and 7 in the blog and deploy.
+
+Figure 6 had no controls at all; it was the one still picture in the README. Figure 7 had sliders, but the chart below it (figure 8) only answered to hovering.
+
+1. **Figure 6** gained a strip above the histogram: a stretch of the zeros, rescaled to average gap 1, beside independent random points with the same average gap, with every pair closer than a quarter of the average gap marked. A slider sets how many zeros are used, Play adds them one at a time, and a button draws new random points, whose gaps now also appear as outlined bars in the histogram. The random points come from a fixed seed, so the page opens the same way every time. The seed chosen gives a typical draw: 20.9% of its gaps are close pairs, against 22.1% expected.
+2. **Figures 7 and 8.** The prime slider now runs over every prime below 1,000 on a logarithmic scale, so the primes below 100, where the grid can be read, still take half its length. Touching a square of the grid checks the equation there. Play steps through the primes while the lower chart fills in. Touching a point of the lower chart selects that prime above.
+3. **The README** now shows figure 6 as a recording like the others, and figure 7's recording includes the grid check and a run of Play. The recorder now skips the two video cards, which had shifted the position of every figure card on the page.
+
+Checked: both figures at phone and desktop widths in both themes, every control, the equation check at several squares (for example 36² ≡ 1 ≡ 36³ − 36 + 1 mod 37), and no script errors.
 
 ### Sources consulted in this session
 

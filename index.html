@@ -97,6 +97,7 @@ canvas{display:block;width:100%;touch-action:pan-y}
 .legend i.dash{border-top-style:dashed}
 .legend i.box{height:10px;width:10px;border:0;background:var(--c);border-radius:2px}
 .legend i.dotk{height:8px;width:8px;border:0;background:var(--c);border-radius:50%}
+.legend i.obox{height:10px;width:10px;border:1.5px solid var(--c);background:transparent;border-radius:2px}
 .cap{font:400 .86rem/1.5 var(--font-ui);color:var(--ink-2);margin:.7rem 0 0}
 .read{font:400 .86rem/1.5 var(--font-ui);color:var(--ink);font-variant-numeric:tabular-nums;margin:.6rem 0 0;min-height:1.3em}
 .read b{font-weight:600}
@@ -344,10 +345,16 @@ code{font:400 .88em ui-monospace,SFMono-Regular,Menlo,monospace;background:color
 <p>Rescale the gaps between consecutive zeros so that the average gap is 1. They do not look like gaps between randomly scattered points. They look like gaps between eigenvalues of large random Hermitian matrices: the zeros repel one another. Montgomery found this in 1973 and Odlyzko's computations confirmed it to high accuracy.</p>
 
 <figure class="fig">
-  <div class="fig-h"><span class="fig-n">Figure 6</span><span class="fig-t">Gaps between the first 600 zeros</span></div>
-  <div class="legend"><span><i class="box" style="--c:var(--zero)"></i>zeros of ζ</span><span><i style="--c:var(--ink)"></i>random-matrix prediction</span><span><i class="dash" style="--c:var(--muted)"></i>independent random points</span></div>
-  <div class="plot"><canvas id="c6" role="img" aria-label="Histogram of normalised gaps between zeta zeros with the random matrix prediction and the exponential law."></canvas><div class="tip" id="t6" hidden></div></div>
-  <p class="cap">Independent points would often sit almost on top of each other. Zeros almost never do.</p>
+  <div class="fig-h"><span class="fig-n">Figure 6</span><span class="fig-t">Gaps between zeros, and between random points</span></div>
+  <div class="legend"><span><i class="box" style="--c:var(--zero)"></i>zeros of ζ</span><span><i class="obox" style="--c:var(--muted)"></i>independent random points</span><span><i style="--c:var(--ink)"></i>random-matrix prediction</span><span><i class="dash" style="--c:var(--muted)"></i>exponential law</span></div>
+  <div class="plot"><canvas id="c6s" role="img" aria-label="Two rows of tick marks: a stretch of the zeros used, rescaled to average gap one, and independent random points with the same average gap. Pairs closer than a quarter of the average gap are marked."></canvas></div>
+  <div class="plot"><canvas id="c6" role="img" aria-label="Histogram of normalised gaps between zeta zeros and between random points, with the random matrix prediction and the exponential law."></canvas><div class="tip" id="t6" hidden></div></div>
+  <p class="read" id="r6"></p>
+  <div class="ctl">
+    <div class="row"><label for="n6">Zeros used</label><input type="range" id="n6" min="20" max="600" step="1" value="600"><output id="on6" for="n6">600</output></div>
+    <div class="btns"><button type="button" class="primary" id="p6">Play from 20</button><button type="button" id="s6">New random points</button></div>
+  </div>
+  <p class="cap">Above, the latest stretch of the zeros used, rescaled so that the average gap is 1, beside independent random points with the same average gap. A bar underneath marks two points closer than a quarter of the average gap. Random points do this all the time; zeros almost never do. Below, the gaps of all the zeros used, sorted by size. Press Play to add the zeros one at a time and watch the bars settle onto the random-matrix curve.</p>
 </figure>
 
 <p>This is the best evidence for an old idea of Hilbert and Pólya: the heights <i>γ</i> are the eigenvalues of some self-adjoint operator. Such eigenvalues are real, which would be the hypothesis. Connes's trace-formula programme follows this route, and so does the Masullo manuscript. The announced proof takes a different road, and to see it we have to visit a parallel world.</p>
@@ -365,19 +372,20 @@ code{font:400 .88em ui-monospace,SFMono-Regular,Menlo,monospace;background:color
   <div class="fig-h"><span class="fig-n">Figure 7</span><span class="fig-t">An elliptic curve modulo p, and its two “zeros”</span></div>
   <div class="legend"><span><i class="dotk" style="--c:var(--prime)"></i>solutions of y² = x³ + ax + b (mod p)</span><span><i class="dotk" style="--c:var(--zero)"></i>α and its conjugate</span><span><i style="--c:var(--law)"></i>circle |z| = √p</span></div>
   <div class="duo">
-    <div class="plot"><canvas id="c7" role="img" aria-label="Grid of solutions of the elliptic curve equation modulo p."></canvas></div>
+    <div class="plot"><canvas id="c7" role="img" aria-label="Grid of solutions of the elliptic curve equation modulo p."></canvas><div class="tip" id="t7" hidden></div></div>
     <div class="plot"><canvas id="c7b" role="img" aria-label="The Frobenius eigenvalues alpha and its conjugate on the circle of radius square root of p."></canvas></div>
   </div>
   <p class="read" id="r7"></p>
   <div class="ctl">
     <div class="row"><label for="a7">a</label><input type="range" id="a7" min="-5" max="5" step="1" value="-1"><output id="oa7" for="a7">−1</output></div>
     <div class="row"><label for="bb7">b</label><input type="range" id="bb7" min="-5" max="5" step="1" value="1"><output id="obb7" for="bb7">1</output></div>
-    <div class="row"><label for="p7">p</label><input type="range" id="p7" min="0" max="22" step="1" value="9"><output id="op7" for="p7">37</output></div>
+    <div class="row"><label for="p7">p</label><input type="range" id="p7" min="0" max="1000" step="1" value="378"><output id="op7" for="p7">37</output></div>
+    <div class="btns"><button type="button" class="primary" id="pl7">Play through the primes</button></div>
   </div>
   <h3>The same curve at every prime below 1,000</h3>
   <div class="legend"><span><i class="dotk" style="--c:var(--zero)"></i>aₚ / 2√p = cos(arg α)</span><span><i style="--c:var(--law)"></i>Hasse's bound, ±1</span></div>
   <div class="plot"><canvas id="c8" role="img" aria-label="Scatter plot of the normalised trace a p over two root p for primes below 1000. All points lie between minus one and one."></canvas><div class="tip" id="t8" hidden></div></div>
-  <p class="cap"><b style="font-weight:600">Figure 8</b> is the lower chart. Count the solutions, add one point at infinity to get N, and set aₚ = p + 1 − N. The numbers α and ᾱ with sum aₚ and product p always land on the green circle. That is the Riemann hypothesis for this curve, and you can check it by counting.</p>
+  <p class="cap"><b style="font-weight:600">Figure 8</b> is the lower chart. Count the solutions, add one point at infinity to get N, and set aₚ = p + 1 − N. The numbers α and ᾱ with sum aₚ and product p always land on the green circle. That is the Riemann hypothesis for this curve, and you can check it by counting. Touch a square of the grid to test the equation there. Press Play to run through every prime below 1,000: α travels round the circle while the lower chart fills in, one prime at a time, and never leaves its band. Touch a point of the lower chart to jump to that prime.</p>
 </figure>
 
 <div class="ex"><b class="l">Worked example</b>
@@ -882,37 +890,90 @@ function drawTrace(cv, H, P, i1, o){
 
 /* ---------- 6: gaps between zeros ---------- */
 (function(){
-  const cv = $('#c6'), tip = $('#t6'), BW = 0.2, NB = 16, cnt = new Array(NB).fill(0);
-  const w = ZEROS.map(g => g / (2 * Math.PI) * (Math.log(g / (2 * Math.PI)) - 1) + 7 / 8); let tot = 0;
-  for (let i = 1; i < w.length; i++) { const b = Math.floor((w[i] - w[i - 1]) / BW); if (b < NB) cnt[b]++; tot++; }
-  let hb = -1, f;
+  const cv = $('#c6'), cs = $('#c6s'), tip = $('#t6'), read = $('#r6'), sl = $('#n6'), on = $('#on6'), pb = $('#p6'), sb = $('#s6');
+  const BW = 0.2, NB = 16, CLOSE = 0.25, N0 = 20, NMAX = ZEROS.length;
+  // unfold: the smooth zero count turns the heights into points with average gap 1
+  const w = ZEROS.map(g => g / (2 * Math.PI) * (Math.log(g / (2 * Math.PI)) - 1) + 7 / 8);
+  let N = NMAX, seed = 9, r = [], hb = -1, f, playing = false, last = 0, nf = N;
+  function reroll(){   // independent points with the same average gap: exponential gaps from a seeded generator
+    let s = seed * 0x9E3779B1 >>> 0; const rnd = () => { s = s + 0x6D2B79F5 >>> 0; let t = s; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    r = [w[0]]; for (let i = 1; i < NMAX; i++) r.push(r[i - 1] - Math.log(1 - rnd()));
+  }
+  function hist(pts){ const c = new Array(NB).fill(0); let close = 0; for (let i = 1; i < N; i++) { const d = pts[i] - pts[i - 1], b = Math.floor(d / BW); if (b < NB) c[b]++; if (d < CLOSE) close++; } return { c, close }; }
+  function bar(g, x, y, bw, h){ const q = Math.min(4, h); g.beginPath(); g.moveTo(x, y + h); g.lineTo(x, y + q); g.quadraticCurveTo(x, y, x + q, y); g.lineTo(x + bw - q, y); g.quadraticCurveTo(x + bw, y, x + bw, y + q); g.lineTo(x + bw, y + h); }
+  function strip(){
+    const { g, W } = prep(cs, 92), ml = 6, mr = 6, pw = W - ml - mr;
+    // the window: the last SPAN units of the zeros used, at least 14 px per unit so that close pairs stay apart
+    const SPAN = Math.round(Math.min(30, Math.max(12, pw / 14)));
+    const hi = Math.max(w[N - 1] + 0.5, w[0] - 0.5 + SPAN), lo = hi - SPAN, X = v => ml + (v - lo) / SPAN * pw;
+    const row = (pts, off, y, h, color, label) => {
+      g.strokeStyle = COL.grid; g.lineWidth = 1; g.beginPath(); g.moveTo(ml, Math.round(y + h) + .5); g.lineTo(W - mr, Math.round(y + h) + .5); g.stroke();
+      const n = Math.min(N, pts.length);
+      for (let i = 0; i < n; i++) { const v = pts[i] + off; if (v < lo || v > hi) continue;
+        const near = (i > 0 && pts[i] - pts[i - 1] < CLOSE) || (i + 1 < n && pts[i + 1] - pts[i] < CLOSE), x = Math.round(X(v)) + .5;
+        g.strokeStyle = near ? COL.ink : color; g.lineWidth = 2; g.beginPath(); g.moveTo(x, y + 4); g.lineTo(x, y + h - 2); g.stroke();
+        if (i + 1 < n && pts[i + 1] - pts[i] < CLOSE && pts[i + 1] + off <= hi) { g.fillStyle = COL.ink; g.fillRect(x - 3, y + h + 2, X(pts[i + 1] + off) - x + 6, 2.5); } }
+      g.font = FONT; g.textAlign = 'left'; g.textBaseline = 'top'; const tw = g.measureText(label).width + 8;
+      g.fillStyle = COL.surface; g.fillRect(ml, y - 13, tw, 13); g.fillStyle = COL['ink-2']; g.fillText(label, ml + 1, y - 12);
+    };
+    row(w, 0, 16, 26, COL.zero, 'zeros of ζ, rescaled');
+    row(r, w[N - 1] - r[N - 1], 60, 26, COL.muted, 'independent random points');   // shifted to end where the zeros end; the gaps are unchanged
+  }
   function draw(){
+    const Z = hist(w), R = hist(r), tot = N - 1;
     f = frame(cv, 244, { x0: 0, x1: NB * BW, y0: 0, y1: 1.1, ml: 34, mb: 40, xtitle: 'gap ÷ average gap', xticks: tk(nice(0, 3, 6)), yticks: tk([0, 0.25, 0.5, 0.75, 1]) });
     const g = f.g, bw = Math.min(24, f.X(BW) - f.X(0) - 2);
-    for (let b = 0; b < NB; b++) { const d = cnt[b] / (tot * BW), x = f.X((b + .5) * BW) - bw / 2, y = f.Y(d), h = f.Y(0) - y; if (h < .5) continue;
-      g.fillStyle = COL.zero; g.globalAlpha = hb === -1 || hb === b ? 1 : .55; g.beginPath(); const r = Math.min(4, h); g.moveTo(x, y + h); g.lineTo(x, y + r); g.quadraticCurveTo(x, y, x + r, y); g.lineTo(x + bw - r, y); g.quadraticCurveTo(x + bw, y, x + bw, y + r); g.lineTo(x + bw, y + h); g.fill(); g.globalAlpha = 1; }
+    for (let b = 0; b < NB; b++) { const d = Z.c[b] / (tot * BW), x = f.X((b + .5) * BW) - bw / 2, y = f.Y(Math.min(d, 1.1)), h = f.Y(0) - y; if (h < .5) continue;
+      g.fillStyle = COL.zero; g.globalAlpha = hb === -1 || hb === b ? 1 : .55; bar(g, x, y, bw, h); g.fill(); g.globalAlpha = 1; }
+    for (let b = 0; b < NB; b++) { const d = R.c[b] / (tot * BW), x = f.X((b + .5) * BW) - bw / 2 - 1, y = f.Y(Math.min(d, 1.1)), h = f.Y(0) - y; if (h < .5) continue;
+      bar(g, x, y, bw + 2, h); stroke(g, COL.muted, 1.5); }
     const S = 120, xs = i => NB * BW * i / (S - 1);
     curve(g, S, i => f.X(xs(i)), i => f.Y(Math.exp(-xs(i))), COL.muted, 1.5, [4, 4]);
     curve(g, S, i => f.X(xs(i)), i => f.Y(32 / (Math.PI * Math.PI) * xs(i) * xs(i) * Math.exp(-4 * xs(i) * xs(i) / Math.PI)), COL.ink, 2);
-    if (hb >= 0) tipShow(tip, f.X((hb + .5) * BW), f.Y(cnt[hb] / (tot * BW)), 'gap ' + (hb * BW).toFixed(1) + ' to ' + ((hb + 1) * BW).toFixed(1), [{ c: COL.zero, v: String(cnt[hb]), l: 'of ' + tot + ' gaps' }]);
+    if (hb >= 0) tipShow(tip, f.X((hb + .5) * BW), f.Y(Math.min(1.1, Math.max(Z.c[hb], R.c[hb]) / (tot * BW))), 'gap ' + (hb * BW).toFixed(1) + ' to ' + ((hb + 1) * BW).toFixed(1), [{ c: COL.zero, v: String(Z.c[hb]), l: 'zeros' }, { c: COL.muted, v: String(R.c[hb]), l: 'random points' }]);
+    strip();
+    const pc = k => (100 * k / tot).toFixed(k && k < tot / 100 ? 1 : 0) + '%';
+    setRead(read, [{ t: tot + ' gaps', b: 1 }, { t: '   closer than ¼:', dim: 1 }, { t: '   zeros ' + Z.close + ' (' + pc(Z.close) + ')', b: 1 }, { t: '   random points ' + R.close + ' (' + pc(R.close) + ')', dim: 1 }]);
+    on.textContent = N;
   }
+  function stop(){ playing = false; pb.textContent = 'Play from ' + N0; }
+  function tick(ts){ if (!playing) return; const d = Math.min(64, ts - (last || ts)); last = ts; nf = Math.min(NMAX, nf * Math.exp(d * 0.00042)); N = Math.round(nf); sl.value = N; if (N >= NMAX) stop(); draw(); if (playing) requestAnimationFrame(tick); }
+  pb.addEventListener('click', () => { if (playing) return stop(); nf = N = N0; sl.value = N; playing = true; last = 0; pb.textContent = 'Pause'; draw(); requestAnimationFrame(tick); });
+  sl.addEventListener('input', () => { N = nf = +sl.value; if (playing) stop(); hb = -1; tip.hidden = true; draw(); });
+  sb.addEventListener('click', () => { seed++; reroll(); draw(); });
   hover(cv, x => { const b = Math.floor(f.Xi(x) / BW); hb = b >= 0 && b < NB ? b : -1; if (hb < 0) tip.hidden = true; draw(); }, () => { hb = -1; tip.hidden = true; draw(); });
-  figs.push(draw);
+  reroll(); figs.push(draw);
 })();
 
 /* ---------- 7 and 8: elliptic curves over F_p ---------- */
 (function(){
-  const cv = $('#c7'), cc = $('#c7b'), c8 = $('#c8'), t8 = $('#t8'), read = $('#r7'), sa = $('#a7'), sb = $('#bb7'), sp = $('#p7');
-  const PL = T.primes.filter(p => p >= 5 && p < 100), P8 = T.primes.filter(p => p >= 5 && p < 1000);
-  let a = -1, b = 1, p = 37, pts8 = [], h8 = -1, f8;
-  function drawGrid(E){
+  const cv = $('#c7'), cc = $('#c7b'), c8 = $('#c8'), t7 = $('#t7'), t8 = $('#t8'), read = $('#r7'), sa = $('#a7'), sb = $('#bb7'), sp = $('#p7'), pb = $('#pl7');
+  const P8 = T.primes.filter(p => p >= 5 && p < 1000), LP = Math.log(P8[P8.length - 1] / 5);
+  // the p slider is logarithmic, so the small primes, where the grid can be read, get most of its length
+  const pOf = v => { const top = 5 * Math.exp(v / 1000 * LP) * (1 + 1e-9); let q = 5; for (const x of P8) { if (x > top) break; q = x; } return q; };
+  const vOf = q => Math.ceil(1000 * Math.log(q / 5) / LP - 1e-9);
+  let a = -1, b = 1, p = 37, E = null, pts8 = [], h8 = -1, f8, G = null, cell7 = null, playing = false, reveal = false, last = 0, acc = 0;
+  const md = (v, q) => ((v % q) + q) % q;
+  const term = (k, s) => k ? (k < 0 ? ' − ' : ' + ') + (Math.abs(k) === 1 ? '' : Math.abs(k)) + s : '';
+  function drawGrid(){
     const W = cv.clientWidth || 300, S = Math.min(W, 330), { g } = prep(cv, S), m = 16, side = S - 2 * m, cell = side / p, x0 = (W - side) / 2;
+    G = { x0, m, side, cell };
     g.strokeStyle = COL.rule; g.lineWidth = 1; g.strokeRect(Math.round(x0) + .5, m + .5, side, side);
     if (p <= 37) { g.strokeStyle = COL.grid; g.beginPath(); for (let i = 1; i < p; i++) { const q = Math.round(i * cell) + .5; g.moveTo(x0 + q, m); g.lineTo(x0 + q, m + side); g.moveTo(x0, m + q); g.lineTo(x0 + side, m + q); } g.stroke(); }
     const r = Math.max(1.2, Math.min(5, cell * 0.34)); g.fillStyle = COL.prime;
     for (let i = 0; i < E.pts.length; i += 2) { g.beginPath(); g.arc(x0 + (E.pts[i] + .5) * cell, m + side - (E.pts[i + 1] + .5) * cell, r, 0, 7); g.fill(); }
+    if (cell7) { const [x, y] = cell7, cx = x0 + (x + .5) * cell, cy = m + side - (y + .5) * cell;
+      g.strokeStyle = COL.ink; g.lineWidth = 1.5; g.beginPath(); g.arc(cx, cy, Math.max(r + 3, 4.5), 0, 7); g.stroke(); }
     g.fillStyle = COL.muted; g.textAlign = 'center'; g.textBaseline = 'top'; g.fillText('x = 0 … ' + (p - 1), W / 2, m + side + 3);
     g.save(); g.translate(x0 - 4, m + side / 2); g.rotate(-Math.PI / 2); g.textBaseline = 'bottom'; g.fillText('y = 0 … ' + (p - 1), 0, 0); g.restore();
+  }
+  function gridTip(){
+    if (!cell7) { t7.hidden = true; return; }
+    const [x, y] = cell7, lhs = md(y * y, p), rhs = md(x * x * x + a * x + b, p), cx = G.x0 + (x + .5) * G.cell, cy = G.m + G.side - (y + .5) * G.cell;
+    tipShow(t7, cx, cy, '(x, y) = (' + x + ', ' + y + ')  mod ' + p, [
+      { c: COL.prime, v: String(lhs), l: 'y²' },
+      { c: COL.prime, v: String(rhs), l: 'x³' + term(a, 'x') + (b ? (b < 0 ? ' − ' : ' + ') + Math.abs(b) : '') },
+      { v: lhs === rhs ? 'equal:' : 'different:', l: lhs === rhs ? 'a point of the curve' : 'not on the curve' }]);
   }
   function drawCircle(E){
     const W = cc.clientWidth || 300, H = Math.min(W, 330) > 260 ? 250 : 220, { g } = prep(cc, H), R = Math.min(W, H) / 2 - 30, cx = W / 2, cy = H / 2, sq = Math.sqrt(p);
@@ -929,14 +990,18 @@ function drawTrace(cv, H, P, i1, o){
   }
   function scatter(){
     f8 = frame(c8, 214, { x0: 0, x1: 1000, y0: -1.25, y1: 1.25, ml: 32, mb: 40, xtitle: 'prime p', xticks: tk(nice(0, 1000, 5)), yticks: tk([-1, 0, 1], minus) });
-    const g = f8.g;
+    const g = f8.g, X = Math.round(f8.X(p)) + .5;
     [-1, 1].forEach(v => { g.strokeStyle = COL.law; g.lineWidth = 2; g.beginPath(); g.moveTo(f8.ml, f8.Y(v)); g.lineTo(f8.ml + f8.pw, f8.Y(v)); g.stroke(); });
-    pts8.forEach((q, i) => { g.beginPath(); g.arc(f8.X(q.p), f8.Y(q.v), i === h8 ? 5 : 2.6, 0, 7); g.fillStyle = COL.zero; g.globalAlpha = h8 < 0 || i === h8 ? 1 : .5; g.fill(); g.globalAlpha = 1; });
+    g.strokeStyle = COL.muted; g.lineWidth = 1; g.beginPath(); g.moveTo(X, f8.mt); g.lineTo(X, f8.mt + f8.ph); g.stroke();
+    pts8.forEach((q, i) => { const later = reveal && q.p > p; g.beginPath(); g.arc(f8.X(q.p), f8.Y(q.v), i === h8 ? 5 : 2.6, 0, 7); g.fillStyle = COL.zero; g.globalAlpha = later ? .13 : h8 < 0 || i === h8 ? 1 : .5; g.fill(); g.globalAlpha = 1; });
+    const cur = pts8.find(q => q.p === p);
+    if (cur) { g.strokeStyle = COL.ink; g.lineWidth = 1.5; g.beginPath(); g.arc(f8.X(cur.p), f8.Y(cur.v), 6, 0, 7); g.stroke(); }
     if (h8 >= 0) { const q = pts8[h8]; tipShow(t8, f8.X(q.p), f8.Y(q.v), 'p = ' + q.p, [{ c: COL.prime, v: String(q.N), l: 'points' }, { c: COL.zero, v: minus(q.ap), l: 'aₚ, bound ' + (2 * Math.sqrt(q.p)).toFixed(1) }]); }
   }
   function upd(full){
-    const E = RH.ecCount(a, b, p, true);
-    drawGrid(E); drawCircle(E);
+    E = RH.ecCount(a, b, p, true);
+    if (cell7 && (cell7[0] >= p || cell7[1] >= p)) cell7 = null;
+    drawGrid(); drawCircle(E); gridTip();
     $('#oa7').textContent = minus(a); $('#obb7').textContent = minus(b); $('#op7').textContent = p;
     if (E.singular) setRead(read, [{ t: 'This curve is singular modulo ' + p + '.', b: 1 }, { t: ' Change a, b or p to get a smooth curve.', dim: 1 }]);
     else { const re = E.ap / 2, im = Math.sqrt(p - re * re);
@@ -944,11 +1009,26 @@ function drawTrace(cv, H, P, i1, o){
     if (full) { pts8 = []; for (const q of P8) { const r = RH.ecCount(a, b, q, false); if (!r.singular) pts8.push({ p: q, N: r.N, ap: r.ap, v: r.ap / (2 * Math.sqrt(q)) }); } h8 = -1; t8.hidden = true; }
     scatter();
   }
-  sa.addEventListener('input', () => { a = +sa.value; upd(true); });
-  sb.addEventListener('input', () => { b = +sb.value; upd(true); });
-  sp.addEventListener('input', () => { p = PL[+sp.value]; upd(false); });
-  hover(c8, (x, y) => { let best = -1, bd = 900; pts8.forEach((q, i) => { const dx = f8.X(q.p) - x, dy = f8.Y(q.v) - y, d = dx * dx + dy * dy; if (d < bd) { bd = d; best = i; } }); h8 = best; if (best < 0) t8.hidden = true; scatter(); }, () => { h8 = -1; t8.hidden = true; scatter(); });
-  figs.push(() => upd(true));
+  function setP(q){ p = q; sp.value = vOf(q); }
+  // Play: one prime at a time, slowly at first, while the lower chart fills in
+  const hold = q => 0.02 + 0.45 * Math.sqrt(5 / q);
+  function stop(){ playing = false; pb.textContent = p >= P8[P8.length - 1] ? 'Play again' : 'Play through the primes'; if (p >= P8[P8.length - 1]) { reveal = false; scatter(); } }
+  function tick(ts){ if (!playing) return; const d = Math.min(64, ts - (last || ts)); last = ts; acc += d / 1000; let moved = false;
+    while (acc >= hold(p) && p < P8[P8.length - 1]) { acc -= hold(p); setP(P8[P8.indexOf(p) + 1]); moved = true; }
+    if (moved) upd(false);
+    if (p >= P8[P8.length - 1]) stop(); else requestAnimationFrame(tick); }
+  pb.addEventListener('click', () => { if (playing) return stop(); if (p >= P8[P8.length - 1]) setP(5); cell7 = null; reveal = true; playing = true; last = 0; acc = 0; pb.textContent = 'Pause'; upd(false); requestAnimationFrame(tick); });
+  const manual = () => { if (playing) stop(); reveal = false; };
+  sa.addEventListener('input', () => { a = +sa.value; manual(); upd(true); });
+  sb.addEventListener('input', () => { b = +sb.value; manual(); upd(true); });
+  sp.addEventListener('input', () => { p = pOf(+sp.value); manual(); upd(false); });
+  hover(cv, (x, y) => { if (!G) return; const i = Math.floor((x - G.x0) / G.cell), j = Math.floor((G.m + G.side - y) / G.cell);
+    const nc = i >= 0 && i < p && j >= 0 && j < p ? [i, j] : null; if (String(nc) === String(cell7)) return; cell7 = nc; drawGrid(); gridTip(); },
+    () => { cell7 = null; drawGrid(); gridTip(); });
+  const near8 = (x, y) => { let best = -1, bd = 900; pts8.forEach((q, i) => { const dx = f8.X(q.p) - x, dy = f8.Y(q.v) - y, d = dx * dx + dy * dy; if (d < bd) { bd = d; best = i; } }); return best; };
+  hover(c8, (x, y) => { h8 = near8(x, y); if (h8 < 0) t8.hidden = true; scatter(); }, () => { h8 = -1; t8.hidden = true; scatter(); });
+  c8.addEventListener('click', e => { const rc = c8.getBoundingClientRect(), i = near8(e.clientX - rc.left, e.clientY - rc.top); if (i < 0) return; manual(); setP(pts8[i].p); upd(false); });
+  setP(p); figs.push(() => upd(true));
 })();
 
 /* ---------- 9: multiplicity ---------- */
